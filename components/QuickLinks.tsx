@@ -64,22 +64,23 @@ const quickLinks = [
 
 export default function QuickLinks() {
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <h2 className="text-3xl font-bold text-white mb-8">Quick Access</h2>
-      <div className="grid grid-cols-2 md:grid-cols-4 gap-4">
+    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-8 md:py-12">
+      <h2 className="text-2xl sm:text-3xl font-bold text-white mb-4 md:mb-8 px-2 sm:px-0">Quick Access</h2>
+      
+      <div className="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-4">
         {quickLinks.map((link) => {
           const Icon = link.icon
           return (
             <Link
               key={link.name}
               href={link.href}
-              className="group relative overflow-hidden rounded-lg p-6 card-hover"
+              className="group relative overflow-hidden rounded-2xl md:rounded-lg p-5 md:p-6 active:scale-95 transition-all touch-feedback"
             >
-              <div className={`absolute inset-0 bg-gradient-to-br ${link.color} opacity-80 group-hover:opacity-100 transition-opacity`}></div>
+              <div className={`absolute inset-0 bg-gradient-to-br ${link.color} opacity-90 md:opacity-80 md:group-hover:opacity-100 transition-opacity`}></div>
               <div className="relative z-10">
-                <Icon className="w-8 h-8 text-white mb-3" />
-                <h3 className="text-lg font-bold text-white mb-1">{link.name}</h3>
-                <p className="text-sm text-gray-200">{link.description}</p>
+                <Icon className="w-7 h-7 md:w-8 md:h-8 text-white mb-2 md:mb-3" />
+                <h3 className="text-base md:text-lg font-bold text-white mb-1">{link.name}</h3>
+                <p className="text-xs md:text-sm text-gray-100 md:text-gray-200">{link.description}</p>
               </div>
             </Link>
           )

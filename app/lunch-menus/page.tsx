@@ -1,238 +1,179 @@
 'use client'
 
-import { useState } from 'react'
-import { Utensils, Coffee, Pizza, Salad, Flame, ExternalLink, Leaf, ChevronRight } from 'lucide-react'
+import React, { useState } from 'react'
+import { Utensils, MapPin, Coffee, Pizza, Flame, Salad, Cookie, Droplet, ExternalLink, Info } from 'lucide-react'
 
-type MenuCategory = 'all' | 'breakfast' | 'pizza' | 'wings' | 'market' | 'vegetarian' | 'harvest'
+type Location = 'large-cafe' | 'small-cafe' | '1000-building' | '900-building'
 
-interface MenuItem {
-  id: string
+interface FoodItem {
   name: string
-  category: MenuCategory[]
+  category: string
   description?: string
   options?: string[]
-  sides?: string[]
-  isVegetarian?: boolean
-  isPopular?: boolean
 }
 
-const menuItems: MenuItem[] = [
-  // Wing Bar
-  {
-    id: 'wings-buffalo',
-    name: 'Buffalo Chicken Wings',
-    category: ['wings', 'all'],
-    description: 'Spicy buffalo sauce with tender chicken wings',
-    isPopular: true,
-  },
-  {
-    id: 'wings-boomboom',
-    name: 'Boom Boom Chicken Wings',
-    category: ['wings', 'all'],
-    description: 'Sweet and spicy signature sauce',
-  },
-  {
-    id: 'wings-bbq',
-    name: 'BBQ Chicken Wings',
-    category: ['wings', 'all'],
-    description: 'Classic BBQ glazed wings',
-  },
-  {
-    id: 'wings-boneless',
-    name: 'Boneless Wings - Plain',
-    category: ['wings', 'all'],
-    description: 'Crispy boneless chicken, plain or with your favorite sauce',
-  },
-  {
-    id: 'pretzel-stick',
-    name: 'Soft Pretzel Stick',
-    category: ['wings', 'all'],
-    description: 'Warm, soft pretzel stick',
-  },
+interface LocationMenu {
+  name: string
+  icon: any
+  color: string
+  sections: {
+    [key: string]: FoodItem[]
+  }
+  specialNote?: string
+}
 
-  // Breakfast
-  {
-    id: 'breakfast-bacon',
-    name: 'Bacon, Egg & Cheese on a Croissant',
-    category: ['breakfast', 'all'],
-    sides: ['Crunchy Tater Tots'],
-    isPopular: true,
+const locations: { [key in Location]: LocationMenu } = {
+  'large-cafe': {
+    name: 'Large Cafe',
+    icon: Utensils,
+    color: 'from-primary to-red-600',
+    sections: {
+      'Pizza Stone': [
+        { name: "Papa John's Pizza", category: 'pizza', options: ['Plain', 'Pepperoni'] },
+        { name: 'Mini Mozzarella Cheese Calzones', category: 'pizza' },
+        { name: 'Freshly Baked Pizza Crunchers', category: 'pizza' },
+      ],
+      'Wing Bar': [
+        { name: 'Buffalo Chicken Wings', category: 'wings', description: 'Spicy buffalo sauce' },
+        { name: 'Boom Boom Chicken Wings', category: 'wings', description: 'Sweet and spicy signature sauce' },
+        { name: 'BBQ Chicken Wings', category: 'wings', description: 'Classic BBQ glazed' },
+        { name: 'Boneless Wings - Plain', category: 'wings' },
+        { name: 'Soft Pretzel Stick', category: 'wings' },
+      ],
+      'The Market': [
+        { name: 'Juicy Hamburger on a Bun', category: 'market' },
+        { name: 'Juicy Cheeseburger on a Bun', category: 'market' },
+        { name: 'Crispy Chicken Sandwich', category: 'market' },
+        { name: 'Twisted Cheesy Breadsticks with Marinara Sauce', category: 'market' },
+        { name: 'Pepperoni Pizza', category: 'market' },
+        { name: 'Mozzarella Sticks', category: 'market' },
+        { name: 'Stromboli Variety', category: 'market' },
+      ],
+      'Harvest Market': [
+        { name: 'Chicken Caesar Salad', category: 'salad', description: 'Fresh romaine, grilled chicken, parmesan' },
+        { name: 'Crispy Chicken Salad', category: 'salad', description: 'Mixed greens with crispy chicken tenders' },
+      ],
+      'Sides & Add-ons': [
+        { name: 'French Fries', category: 'sides' },
+        { name: 'Wing Dipping Sauces', category: 'sides', options: ['BBQ', 'Ranch', 'Blue Cheese', 'Boom Boom Sauce'] },
+      ],
+    },
   },
-  {
-    id: 'breakfast-sausage',
-    name: 'Sausage, Egg & Cheese on a Croissant',
-    category: ['breakfast', 'all'],
-    sides: ['Crunchy Tater Tots'],
+  'small-cafe': {
+    name: 'Small Cafe',
+    icon: Coffee,
+    color: 'from-amber-500 to-orange-600',
+    specialNote: 'Features a special menu item that changes daily!',
+    sections: {
+      'Pizza Stone (Limited)': [
+        { name: "Papa John's Pizza", category: 'pizza', options: ['Pepperoni', 'Cheese'] },
+      ],
+      'The Market': [
+        { name: 'Juicy Hamburger on a Bun', category: 'market' },
+        { name: 'Juicy Cheeseburger on a Bun', category: 'market' },
+        { name: 'Crispy Chicken Sandwich', category: 'market' },
+        { name: 'Twisted Cheesy Breadsticks with Marinara Sauce', category: 'market' },
+        { name: 'Pepperoni Pizza', category: 'market' },
+        { name: 'Mozzarella Sticks', category: 'market' },
+        { name: 'Stromboli Variety', category: 'market' },
+      ],
+      'Harvest Market': [
+        { name: 'Chicken Caesar Salad', category: 'salad', description: 'Fresh romaine, grilled chicken, parmesan' },
+        { name: 'Crispy Chicken Salad', category: 'salad', description: 'Mixed greens with crispy chicken tenders' },
+      ],
+      'Daily Special': [
+        { name: '🌟 Ask About Today\'s Special!', category: 'special', description: 'Changes daily - check with cafeteria staff' },
+      ],
+    },
   },
-  {
-    id: 'breakfast-egg',
-    name: 'Egg and Cheese on a Croissant',
-    category: ['breakfast', 'all'],
-    sides: ['Crunchy Tater Tots'],
-    isVegetarian: true,
+  '1000-building': {
+    name: '1000 Building',
+    icon: MapPin,
+    color: 'from-blue-500 to-purple-600',
+    sections: {
+      'Pizza Stone (Limited)': [
+        { name: "Papa John's Pizza", category: 'pizza', options: ['Pepperoni', 'Cheese'] },
+      ],
+      'The Market': [
+        { name: 'Juicy Hamburger on a Bun', category: 'market' },
+        { name: 'Juicy Cheeseburger on a Bun', category: 'market' },
+        { name: 'Crispy Chicken Sandwich', category: 'market' },
+        { name: 'Twisted Cheesy Breadsticks with Marinara Sauce', category: 'market' },
+        { name: 'Pepperoni Pizza', category: 'market' },
+        { name: 'Mozzarella Sticks', category: 'market' },
+        { name: 'Stromboli Variety', category: 'market' },
+      ],
+      'Harvest Market': [
+        { name: 'Chicken Caesar Salad', category: 'salad', description: 'Fresh romaine, grilled chicken, parmesan' },
+        { name: 'Crispy Chicken Salad', category: 'salad', description: 'Mixed greens with crispy chicken tenders' },
+      ],
+    },
   },
-  {
-    id: 'breakfast-pancakes',
-    name: 'Confetti Pancakes',
-    category: ['breakfast', 'all'],
-    sides: ['Crunchy Tater Tots'],
-    isVegetarian: true,
+  '900-building': {
+    name: '900 Building',
+    icon: MapPin,
+    color: 'from-green-500 to-emerald-600',
+    sections: {
+      'Pizza Stone (Limited)': [
+        { name: "Papa John's Pizza", category: 'pizza', options: ['Pepperoni', 'Cheese'] },
+      ],
+      'The Market': [
+        { name: 'Juicy Hamburger on a Bun', category: 'market' },
+        { name: 'Juicy Cheeseburger on a Bun', category: 'market' },
+        { name: 'Crispy Chicken Sandwich', category: 'market' },
+        { name: 'Twisted Cheesy Breadsticks with Marinara Sauce', category: 'market' },
+        { name: 'Pepperoni Pizza', category: 'market' },
+        { name: 'Mozzarella Sticks', category: 'market' },
+        { name: 'Stromboli Variety', category: 'market' },
+      ],
+      'Harvest Market': [
+        { name: 'Chicken Caesar Salad', category: 'salad', description: 'Fresh romaine, grilled chicken, parmesan' },
+        { name: 'Crispy Chicken Salad', category: 'salad', description: 'Mixed greens with crispy chicken tenders' },
+      ],
+    },
   },
-  {
-    id: 'breakfast-cereal',
-    name: 'Assorted Cereal',
-    category: ['breakfast', 'all'],
-    isVegetarian: true,
-  },
-  {
-    id: 'breakfast-bar',
-    name: 'Assorted BeneFIT Bar',
-    category: ['breakfast', 'all'],
-  },
-  {
-    id: 'breakfast-bagel',
-    name: 'Bagel with Cream Cheese',
-    category: ['breakfast', 'all'],
-    isVegetarian: true,
-  },
+}
 
-  // Pizza Stone
-  {
-    id: 'pizza-papajohns',
-    name: "Papa John's Pizza",
-    category: ['pizza', 'all'],
-    options: ['Plain', 'Pepperoni'],
-    isPopular: true,
-  },
-  {
-    id: 'pizza-calzone',
-    name: 'Mini Mozzarella Cheese Calzones',
-    category: ['pizza', 'all'],
-    isVegetarian: true,
-  },
-  {
-    id: 'pizza-crunchers',
-    name: 'Freshly Baked Pizza Crunchers',
-    category: ['pizza', 'all'],
-  },
-
-  // Harvest Market
-  {
-    id: 'salad-chicken-caesar',
-    name: 'Chicken Caesar Salad',
-    category: ['harvest', 'all'],
-    description: 'Fresh romaine, grilled chicken, parmesan, Caesar dressing',
-  },
-  {
-    id: 'salad-crispy-chicken',
-    name: 'Crispy Chicken Salad',
-    category: ['harvest', 'all'],
-    description: 'Mixed greens with crispy chicken tenders',
-  },
-
-  // The Market
-  {
-    id: 'market-hamburger',
-    name: 'Juicy Hamburger on a Bun',
-    category: ['market', 'all'],
-    isPopular: true,
-  },
-  {
-    id: 'market-cheeseburger',
-    name: 'Juicy Cheeseburger on a Bun',
-    category: ['market', 'all'],
-    isPopular: true,
-  },
-  {
-    id: 'market-chicken-sandwich',
-    name: 'Crispy Chicken Sandwich',
-    category: ['market', 'all'],
-  },
-  {
-    id: 'market-breadsticks',
-    name: 'Twisted Cheesy Breadsticks with Marinara Sauce',
-    category: ['market', 'all'],
-    isVegetarian: true,
-  },
-  {
-    id: 'market-pizza',
-    name: 'Pepperoni Pizza',
-    category: ['market', 'pizza', 'all'],
-  },
-  {
-    id: 'market-mozzarella',
-    name: 'Mozzarella Sticks',
-    category: ['market', 'all'],
-    isVegetarian: true,
-  },
-  {
-    id: 'market-stromboli',
-    name: 'Stromboli Variety',
-    category: ['market', 'all'],
-  },
-
-  // Vegetarian Plate
-  {
-    id: 'veg-garden-salad',
-    name: 'Freshly Prepared Garden Salad',
-    category: ['vegetarian', 'all'],
-    sides: ['Cheese Cubes'],
-    isVegetarian: true,
-  },
-  {
-    id: 'veg-nuggets',
-    name: 'Vegetarian Nuggets',
-    category: ['vegetarian', 'all'],
-    isVegetarian: true,
-  },
-  {
-    id: 'veg-grilled-cheese',
-    name: 'Grilled Cheese Sandwich',
-    category: ['vegetarian', 'all'],
-    isVegetarian: true,
-  },
-  {
-    id: 'veg-veggie-burger',
-    name: 'Veggie Burger on a Bun',
-    category: ['vegetarian', 'all'],
-    isVegetarian: true,
-  },
-]
+const allLocationsCookiesAndDrinks = {
+  'Cookies': [
+    { name: 'Red Velvet Cookie', category: 'dessert' },
+    { name: 'Chocolate Chip Cookie', category: 'dessert' },
+    { name: 'M&M Cookie', category: 'dessert' },
+  ],
+  'Ice Cream': [
+    { name: 'Hershey\'s Ice Cream (Various Flavors)', category: 'dessert' },
+  ],
+  'Drinks': [
+    { name: 'Snapple Lemon Tea', category: 'beverage' },
+    { name: 'Snapple Fruit Punch', category: 'beverage' },
+    { name: 'Snapple Orange Mango', category: 'beverage' },
+    { name: 'Lemonade', category: 'beverage' },
+    { name: 'Peach Tea', category: 'beverage' },
+    { name: 'Lemon Tea', category: 'beverage' },
+    { name: 'Sparkling Ice Blue Raspberry', category: 'beverage' },
+    { name: 'Sparkling Ice Citrus', category: 'beverage' },
+    { name: 'Sparkling Ice Cherry Vanilla', category: 'beverage' },
+    { name: 'Water', category: 'beverage' },
+  ],
+}
 
 export default function LunchMenus() {
-  const [selectedCategory, setSelectedCategory] = useState<MenuCategory>('all')
-  const [searchTerm, setSearchTerm] = useState('')
-
-  const categories = [
-    { id: 'all', name: 'All Items', icon: Utensils, color: 'from-primary to-red-600' },
-    { id: 'breakfast', name: 'Breakfast', icon: Coffee, color: 'from-yellow-500 to-orange-500' },
-    { id: 'pizza', name: 'Pizza Stone', icon: Pizza, color: 'from-orange-500 to-red-500' },
-    { id: 'wings', name: 'Wing Bar', icon: Flame, color: 'from-red-500 to-pink-500' },
-    { id: 'market', name: 'The Market', icon: Utensils, color: 'from-blue-500 to-purple-500' },
-    { id: 'harvest', name: 'Harvest Market', icon: Salad, color: 'from-green-500 to-emerald-500' },
-    { id: 'vegetarian', name: 'Vegetarian', icon: Leaf, color: 'from-green-400 to-teal-500' },
-  ]
-
-  const filteredItems = menuItems.filter(item => {
-    const matchesCategory = selectedCategory === 'all' || item.category.includes(selectedCategory)
-    const matchesSearch = item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-                         item.description?.toLowerCase().includes(searchTerm.toLowerCase())
-    return matchesCategory && matchesSearch
-  })
+  const [selectedLocation, setSelectedLocation] = useState<Location>('large-cafe')
+  const currentLocation = locations[selectedLocation]
 
   return (
-    <div className="min-h-screen bg-gradient-to-br from-black via-dark-900 to-black py-12">
+    <div className="min-h-screen bg-black py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
-        <div className="mb-8 text-center">
-          <div className="inline-flex items-center justify-center w-20 h-20 rounded-full bg-gradient-to-br from-primary to-red-600 mb-4 shadow-lg shadow-primary/50">
-            <Utensils className="w-10 h-10 text-white" />
+        <div className="mb-12 text-center">
+          <div className="flex items-center justify-center mb-4">
+            <Utensils className="w-16 h-16 text-primary" />
           </div>
-          <h1 className="text-5xl md:text-6xl font-bold text-white mb-3 bg-gradient-to-r from-white to-gray-400 bg-clip-text text-transparent">
-            BRHS Cafeteria
+          <h1 className="text-4xl md:text-5xl font-bold text-white mb-4">
+            BRHS Dining
           </h1>
           <p className="text-xl text-gray-400 mb-6">
-            Fresh, delicious meals daily
+            Fresh, delicious meals at multiple campus locations
           </p>
           
           {/* Full Menu Link */}
@@ -240,49 +181,35 @@ export default function LunchMenus() {
             href="https://brrsd.nutrislice.com/menu/brrsd-high" 
             target="_blank" 
             rel="noopener noreferrer"
-            className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-primary to-red-600 hover:from-red-600 hover:to-primary text-white font-semibold rounded-full transition-all duration-300 shadow-lg shadow-primary/30 hover:shadow-primary/50 hover:scale-105"
+            className="inline-flex items-center gap-2 px-6 py-3 bg-gradient-to-r from-primary to-red-600 hover:from-red-600 hover:to-primary text-white font-semibold rounded-lg transition-all shadow-lg shadow-primary/30 hover:shadow-primary/50"
           >
-            <span>View Full Menu</span>
-            <ExternalLink className="w-4 h-4" />
+            <span>View Full Nutrislice Menu</span>
+            <ExternalLink className="w-5 h-5" />
           </a>
         </div>
 
-        {/* Search Bar */}
-        <div className="mb-8">
-          <div className="relative max-w-2xl mx-auto">
-            <input
-              type="text"
-              placeholder="Search menu items..."
-              value={searchTerm}
-              onChange={(e) => setSearchTerm(e.target.value)}
-              className="w-full px-6 py-4 bg-dark-800/50 backdrop-blur-sm border border-dark-700 rounded-2xl text-white placeholder-gray-500 focus:outline-none focus:ring-2 focus:ring-primary focus:border-transparent transition-all"
-            />
-            <Utensils className="absolute right-6 top-1/2 transform -translate-y-1/2 w-5 h-5 text-gray-500" />
-          </div>
-        </div>
-
-        {/* Category Pills */}
-        <div className="mb-12 overflow-x-auto pb-4">
-          <div className="flex gap-3 min-w-max px-4 md:px-0 md:justify-center">
-            {categories.map((category) => {
-              const Icon = category.icon
-              const isSelected = selectedCategory === category.id
+        {/* Location Selector */}
+        <div className="mb-12">
+          <h2 className="text-2xl font-bold text-white mb-6 text-center">Choose Your Location</h2>
+          <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-4">
+            {(Object.keys(locations) as Location[]).map((locationKey) => {
+              const location = locations[locationKey]
+              const Icon = location.icon
+              const isSelected = selectedLocation === locationKey
               return (
                 <button
-                  key={category.id}
-                  onClick={() => setSelectedCategory(category.id as MenuCategory)}
-                  className={`
-                    relative flex items-center gap-2 px-6 py-3 rounded-full font-semibold transition-all duration-300
-                    ${isSelected 
-                      ? `bg-gradient-to-r ${category.color} text-white shadow-lg scale-105` 
-                      : 'bg-dark-800/50 text-gray-400 hover:text-white hover:bg-dark-700'
-                    }
-                  `}
+                  key={locationKey}
+                  onClick={() => setSelectedLocation(locationKey)}
+                  className={`relative p-6 rounded-xl transition-all transform hover:scale-105 ${
+                    isSelected
+                      ? `bg-gradient-to-br ${location.color} text-white shadow-lg`
+                      : 'bg-dark-800 text-gray-300 hover:bg-dark-700'
+                  }`}
                 >
-                  <Icon className="w-4 h-4" />
-                  <span className="whitespace-nowrap">{category.name}</span>
-                  {isSelected && (
-                    <div className="absolute inset-0 rounded-full bg-white/20 animate-pulse"></div>
+                  <Icon className={`w-8 h-8 mx-auto mb-3 ${isSelected ? 'text-white' : 'text-primary'}`} />
+                  <h3 className="font-bold text-lg">{location.name}</h3>
+                  {isSelected && location.specialNote && (
+                    <p className="text-xs mt-2 opacity-90">✨ {location.specialNote}</p>
                   )}
                 </button>
               )
@@ -290,89 +217,116 @@ export default function LunchMenus() {
           </div>
         </div>
 
-        {/* Menu Items Grid */}
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mb-12">
-          {filteredItems.map((item) => (
-            <div
-              key={item.id}
-              className="group relative bg-gradient-to-br from-dark-800/80 to-dark-900/80 backdrop-blur-sm rounded-2xl p-6 border border-dark-700 hover:border-primary/50 transition-all duration-300 hover:scale-[1.02] hover:shadow-xl hover:shadow-primary/10"
-            >
-              {/* Popular Badge */}
-              {item.isPopular && (
-                <div className="absolute -top-3 -right-3 bg-gradient-to-r from-yellow-400 to-orange-500 text-black text-xs font-bold px-3 py-1 rounded-full shadow-lg animate-pulse">
-                  POPULAR
-                </div>
-              )}
-
-              {/* Vegetarian Badge */}
-              {item.isVegetarian && (
-                <div className="absolute top-4 right-4">
-                  <div className="bg-green-500/20 p-2 rounded-full">
-                    <Leaf className="w-4 h-4 text-green-400" />
-                  </div>
-                </div>
-              )}
-
-              <div className="space-y-3">
-                <h3 className="text-xl font-bold text-white group-hover:text-primary transition-colors pr-8">
-                  {item.name}
-                </h3>
-                
-                {item.description && (
-                  <p className="text-gray-400 text-sm leading-relaxed">
-                    {item.description}
-                  </p>
-                )}
-
-                {item.options && (
-                  <div className="flex flex-wrap gap-2">
-                    {item.options.map((option, idx) => (
-                      <span
-                        key={idx}
-                        className="px-3 py-1 bg-dark-700 text-gray-300 text-xs rounded-full border border-dark-600"
-                      >
-                        {option}
-                      </span>
-                    ))}
-                  </div>
-                )}
-
-                {item.sides && item.sides.length > 0 && (
-                  <div className="pt-3 border-t border-dark-700">
-                    <p className="text-xs text-gray-500 mb-2">Served with:</p>
-                    <div className="flex flex-wrap gap-2">
-                      {item.sides.map((side, idx) => (
-                        <span
-                          key={idx}
-                          className="flex items-center gap-1 text-xs text-primary"
-                        >
-                          <ChevronRight className="w-3 h-3" />
-                          {side}
-                        </span>
-                      ))}
-                    </div>
-                  </div>
-                )}
-              </div>
-
-              {/* Hover Effect Overlay */}
-              <div className="absolute inset-0 rounded-2xl bg-gradient-to-br from-primary/0 to-primary/0 group-hover:from-primary/5 group-hover:to-transparent transition-all duration-300 pointer-events-none"></div>
+        {/* Menu Sections */}
+        <div className="mb-12">
+          <div className="flex items-center justify-center mb-8">
+            <div className={`inline-flex items-center gap-3 px-6 py-3 bg-gradient-to-r ${currentLocation.color} rounded-full shadow-lg`}>
+              {React.createElement(currentLocation.icon, { className: 'w-6 h-6 text-white' })}
+              <h2 className="text-2xl font-bold text-white">{currentLocation.name} Menu</h2>
             </div>
-          ))}
+          </div>
+
+          {currentLocation.specialNote && (
+            <div className="mb-8 p-4 bg-amber-500/10 border border-amber-500/30 rounded-lg">
+              <div className="flex items-center gap-2 text-amber-400">
+                <Info className="w-5 h-5" />
+                <p className="font-semibold">{currentLocation.specialNote}</p>
+              </div>
+            </div>
+          )}
+
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-8">
+            {Object.entries(currentLocation.sections).map(([sectionName, items]) => (
+              <div key={sectionName} className="glass-effect rounded-lg p-6 border border-dark-700">
+                <h3 className="text-xl font-bold text-white mb-4 flex items-center gap-2">
+                  {(sectionName === 'Pizza Stone' || sectionName === 'Pizza Stone (Limited)') && <Pizza className="w-5 h-5 text-primary" />}
+                  {sectionName === 'Wing Bar' && <Flame className="w-5 h-5 text-primary" />}
+                  {sectionName === 'The Market' && <Utensils className="w-5 h-5 text-primary" />}
+                  {sectionName === 'Harvest Market' && <Salad className="w-5 h-5 text-primary" />}
+                  {sectionName === 'Daily Special' && <span className="text-primary">✨</span>}
+                  {sectionName}
+                </h3>
+                <div className="space-y-3">
+                  {items.map((item, idx) => (
+                    <div key={idx} className="bg-dark-800/50 rounded-lg p-4 hover:bg-dark-700/50 transition-all">
+                      <h4 className="font-semibold text-white mb-1">{item.name}</h4>
+                      {item.description && (
+                        <p className="text-gray-400 text-sm mb-2">{item.description}</p>
+                      )}
+                      {item.options && (
+                        <div className="flex flex-wrap gap-2">
+                          {item.options.map((option, optIdx) => (
+                            <span
+                              key={optIdx}
+                              className="px-2 py-1 bg-primary/20 text-primary text-xs rounded-full"
+                            >
+                              {option}
+                            </span>
+                          ))}
+                        </div>
+                      )}
+                    </div>
+                  ))}
+                </div>
+              </div>
+            ))}
+          </div>
         </div>
 
-        {/* No Results */}
-        {filteredItems.length === 0 && (
-          <div className="text-center py-12">
-            <Utensils className="w-16 h-16 text-gray-600 mx-auto mb-4" />
-            <h3 className="text-xl font-bold text-gray-400 mb-2">No items found</h3>
-            <p className="text-gray-500">Try adjusting your search or category filter</p>
+        {/* Available at All Locations */}
+        <div className="mb-12">
+          <h2 className="text-2xl font-bold text-white mb-6 text-center">Available at All Locations</h2>
+          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+            {/* Cookies */}
+            <div className="glass-effect rounded-lg p-6 border border-dark-700">
+              <div className="flex items-center gap-3 mb-4">
+                <Cookie className="w-6 h-6 text-primary" />
+                <h3 className="text-xl font-bold text-white">Cookies</h3>
+              </div>
+              <div className="space-y-2">
+                {allLocationsCookiesAndDrinks['Cookies'].map((item, idx) => (
+                  <div key={idx} className="bg-dark-800/50 rounded-lg p-3">
+                    <p className="text-gray-300">{item.name}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Ice Cream */}
+            <div className="glass-effect rounded-lg p-6 border border-dark-700">
+              <div className="flex items-center gap-3 mb-4">
+                <span className="text-3xl">🍦</span>
+                <h3 className="text-xl font-bold text-white">Ice Cream</h3>
+              </div>
+              <div className="space-y-2">
+                {allLocationsCookiesAndDrinks['Ice Cream'].map((item, idx) => (
+                  <div key={idx} className="bg-dark-800/50 rounded-lg p-3">
+                    <p className="text-gray-300">{item.name}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
+
+            {/* Drinks */}
+            <div className="glass-effect rounded-lg p-6 border border-dark-700">
+              <div className="flex items-center gap-3 mb-4">
+                <Droplet className="w-6 h-6 text-primary" />
+                <h3 className="text-xl font-bold text-white">Beverages</h3>
+              </div>
+              <div className="grid grid-cols-2 gap-2">
+                {allLocationsCookiesAndDrinks['Drinks'].map((item, idx) => (
+                  <div key={idx} className="bg-dark-800/50 rounded-lg p-2">
+                    <p className="text-gray-300 text-sm">{item.name}</p>
+                  </div>
+                ))}
+              </div>
+            </div>
           </div>
-        )}
+        </div>
 
         {/* Info Cards */}
         <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-          <div className="glass-effect rounded-2xl p-6 border border-dark-700">
+          <div className="glass-effect rounded-lg p-6 border border-dark-700">
             <div className="w-12 h-12 rounded-full bg-gradient-to-br from-green-500 to-emerald-600 flex items-center justify-center mb-4">
               <span className="text-2xl">💵</span>
             </div>
@@ -396,14 +350,14 @@ export default function LunchMenus() {
             </ul>
           </div>
 
-          <div className="glass-effect rounded-2xl p-6 border border-dark-700">
+          <div className="glass-effect rounded-lg p-6 border border-dark-700">
             <div className="w-12 h-12 rounded-full bg-gradient-to-br from-blue-500 to-purple-600 flex items-center justify-center mb-4">
               <span className="text-2xl">🥗</span>
             </div>
             <h3 className="text-lg font-bold text-white mb-3">Dietary Info</h3>
             <ul className="space-y-2 text-gray-300 text-sm">
               <li className="flex items-start gap-2">
-                <Leaf className="w-4 h-4 text-green-400 flex-shrink-0 mt-0.5" />
+                <span className="text-primary">•</span>
                 <span>Vegetarian options daily</span>
               </li>
               <li className="flex items-start gap-2">
@@ -421,23 +375,23 @@ export default function LunchMenus() {
             </ul>
           </div>
 
-          <div className="glass-effect rounded-2xl p-6 border border-dark-700">
+          <div className="glass-effect rounded-lg p-6 border border-dark-700">
             <div className="w-12 h-12 rounded-full bg-gradient-to-br from-orange-500 to-red-600 flex items-center justify-center mb-4">
               <span className="text-2xl">⏰</span>
             </div>
-            <h3 className="text-lg font-bold text-white mb-3">Lunch Periods</h3>
+            <h3 className="text-lg font-bold text-white mb-3">Lunch Period</h3>
             <ul className="space-y-3 text-gray-300 text-sm">
-              <li className="flex items-center justify-between p-2 bg-dark-800 rounded-lg">
-                <span className="font-semibold text-primary">Period A</span>
-                <span>11:00 - 11:30 AM</span>
+              <li className="p-3 bg-dark-800 rounded-lg">
+                <div className="flex items-center justify-between mb-2">
+                  <span className="font-semibold text-primary">Normal Schedule</span>
+                  <span className="font-bold text-white">10:18 - 11:07 AM</span>
+                </div>
               </li>
-              <li className="flex items-center justify-between p-2 bg-dark-800 rounded-lg">
-                <span className="font-semibold text-primary">Period B</span>
-                <span>11:30 - 12:00 PM</span>
-              </li>
-              <li className="flex items-center justify-between p-2 bg-dark-800 rounded-lg">
-                <span className="font-semibold text-primary">Period C</span>
-                <span>12:00 - 12:30 PM</span>
+              <li className="p-3 bg-dark-800 rounded-lg">
+                <div className="flex items-center justify-between">
+                  <span className="font-semibold text-orange-400">Delayed Opening</span>
+                  <span className="font-bold text-white">11:21 AM - 12:04 PM</span>
+                </div>
               </li>
             </ul>
           </div>

@@ -35,30 +35,25 @@ const events = [
 
 export default function TodaysEvents() {
   return (
-    <section className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-12">
-      <div className="flex items-center justify-between mb-8">
-        <div className="flex items-center space-x-3">
-          <Calendar className="w-8 h-8 text-primary" />
-          <h2 className="text-3xl font-bold text-white">Today's Events</h2>
-        </div>
-        <button className="text-primary hover:text-primary-light transition-colors">
-          View All
-        </button>
+    <section className="max-w-7xl mx-auto px-6 py-6">
+      <div className="flex items-center justify-between mb-4">
+        <h2 className="text-xl font-bold text-white">Today's Events</h2>
+        <button className="text-red-500 text-sm font-medium">View All</button>
       </div>
 
-      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
+      <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
         {events.map((event) => (
           <div
             key={event.id}
-            className="glass-effect rounded-lg p-6 card-hover cursor-pointer"
+            className="rounded-2xl p-5 bg-gradient-to-br from-dark-800 to-dark-700 border border-dark-700 active:scale-[0.98] transition-transform cursor-pointer"
           >
-            <div className="flex items-start justify-between mb-4">
-              <span className="px-3 py-1 bg-primary/20 text-primary text-xs font-semibold rounded-full">
+            <div className="flex items-start justify-between mb-3">
+              <span className="px-2.5 py-1 bg-red-600/10 text-red-500 text-xs font-semibold rounded-full border border-red-600/20">
                 {event.category}
               </span>
-              <Clock className="w-4 h-4 text-gray-400" />
+              <Clock className="w-4 h-4 text-gray-500" />
             </div>
-            <h3 className="text-lg font-semibold text-white mb-2">{event.title}</h3>
+            <h3 className="text-base font-semibold text-white mb-2">{event.title}</h3>
             <p className="text-gray-400 text-sm mb-1">{event.time}</p>
             <p className="text-gray-500 text-sm">{event.location}</p>
           </div>

@@ -63,11 +63,6 @@ export default function Footer() {
                     Counseling Services
                   </Link>
                 </li>
-                <li>
-                  <Link href="/media-center" className="text-gray-400 hover:text-primary text-sm transition-colors">
-                    Media Center
-                  </Link>
-                </li>
               </ul>
             </div>
 

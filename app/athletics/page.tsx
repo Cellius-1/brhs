@@ -1,30 +1,114 @@
 'use client'
 
-import { Trophy, Ticket, FileText, Users, Calendar, Tv, BookOpen, ShoppingBag } from 'lucide-react'
+import { Trophy, Ticket, FileText, Users, Calendar, Tv, BookOpen, ShoppingBag, MapPin, Clock, Users2 } from 'lucide-react'
 
-const sections = [
+interface Game {
+  id: string
+  sport: string
+  date: string
+  time: string
+  opponent: string
+  location: string
+  homeAway: 'Home' | 'Away'
+  venue: string
+  status: 'upcoming' | 'live' | 'completed'
+  result?: string
+}
+
+const upcomingGames: Game[] = [
   {
-    title: 'Daily & Weekly Events',
-    icon: Calendar,
-    description: 'Stay updated with all Panthers sports events',
-    content: [
-      'Today: Basketball vs. Central High - 4:00 PM (Home)',
-      'Wednesday: Wrestling Match - 5:30 PM (Away)',
-      'Friday: Swimming Championships - 6:00 PM (Home)',
-      'Saturday: Track & Field Meet - 9:00 AM (Away)',
-    ],
+    id: '1',
+    sport: 'Basketball (Boys)',
+    date: 'Jan 28, 2026',
+    time: '4:00 PM',
+    opponent: 'Central High School',
+    location: 'BRHS Gymnasium',
+    homeAway: 'Home',
+    venue: 'Panthers Gym',
+    status: 'upcoming',
   },
   {
-    title: 'Tickets',
-    icon: Ticket,
-    description: 'Purchase tickets for upcoming games',
-    content: [
-      'Get tickets for all BRHS athletic events through GoFan',
-    ],
-    links: [
-      { name: 'GoFan - Purchase Tickets', url: 'https://gofan.co/' },
-    ],
+    id: '2',
+    sport: 'Wrestling',
+    date: 'Jan 29, 2026',
+    time: '5:30 PM',
+    opponent: 'Ridge High School',
+    location: 'Ridge High School',
+    homeAway: 'Away',
+    venue: 'Ridge Wrestling Room',
+    status: 'upcoming',
   },
+  {
+    id: '3',
+    sport: 'Swimming',
+    date: 'Jan 31, 2026',
+    time: '4:00 PM',
+    opponent: 'Somerville High School',
+    location: 'BRHS Pool',
+    homeAway: 'Home',
+    venue: 'Panthers Aquatic Center',
+    status: 'upcoming',
+  },
+  {
+    id: '4',
+    sport: 'Track & Field',
+    date: 'Feb 1, 2026',
+    time: '9:00 AM',
+    opponent: 'Somerset Indoor Meet',
+    location: 'Somerset High School',
+    homeAway: 'Away',
+    venue: 'Somerset Fieldhouse',
+    status: 'upcoming',
+  },
+  {
+    id: '5',
+    sport: 'Soccer (Girls)',
+    date: 'Feb 2, 2026',
+    time: '3:30 PM',
+    opponent: 'Bridgewater-Raritan Invitational',
+    location: 'BRHS Fields',
+    homeAway: 'Home',
+    venue: 'Soccer Complex',
+    status: 'upcoming',
+  },
+  {
+    id: '6',
+    sport: 'Hockey (Boys)',
+    date: 'Feb 3, 2026',
+    time: '7:00 PM',
+    opponent: 'Hunterdon High School',
+    location: 'Hamilton Ice Arena',
+    homeAway: 'Away',
+    venue: 'Hamilton Ice Arena',
+    status: 'upcoming',
+  },
+  {
+    id: '7',
+    sport: 'Volleyball (Girls)',
+    date: 'Feb 4, 2026',
+    time: '6:00 PM',
+    opponent: 'Delaware Valley High School',
+    location: 'BRHS Gymnasium',
+    homeAway: 'Home',
+    venue: 'Panthers Gym',
+    status: 'upcoming',
+  },
+  {
+    id: '8',
+    sport: 'Basketball (Girls)',
+    date: 'Feb 5, 2026',
+    time: '5:30 PM',
+    opponent: 'Watchung High School',
+    location: 'Watchung High School',
+    homeAway: 'Away',
+    venue: 'Watchung Gymnasium',
+    status: 'upcoming',
+  },
+]
+
+const sports = ['All Sports', 'Basketball', 'Wrestling', 'Swimming', 'Track & Field', 'Soccer', 'Hockey', 'Volleyball']
+
+const otherSections = [
   {
     title: 'Athletic Forms',
     icon: FileText,
@@ -34,18 +118,6 @@ const sections = [
       { name: 'Parent Consent Form', url: '#' },
       { name: 'Emergency Contact Form', url: '#' },
       { name: 'Concussion Awareness Form', url: '#' },
-    ],
-  },
-  {
-    title: 'Coaching Staff',
-    icon: Users,
-    description: 'Meet our dedicated coaches',
-    links: [
-      { name: 'Basketball - Coach Johnson', url: '#' },
-      { name: 'Football - Coach Williams', url: '#' },
-      { name: 'Soccer - Coach Martinez', url: '#' },
-      { name: 'Track & Field - Coach Davis', url: '#' },
-      { name: 'View All Staff', url: '#' },
     ],
   },
   {
@@ -87,9 +159,40 @@ const sections = [
       { name: 'Team Orders', url: '#' },
     ],
   },
+  {
+    title: 'More Information',
+    icon: BookOpen,
+    description: 'Learn more about our athletic programs',
+    links: [
+      { name: 'Visit hs.brrsd.org', url: 'https://hs.brrsd.org' },
+    ],
+  },
 ]
 
 export default function Athletics() {
+  const handleSportFilter = (sport: string) => {
+    // Filter implementation
+  }
+
+  const getStatusBadge = (status: string) => {
+    switch (status) {
+      case 'live':
+        return <span className="inline-block px-3 py-1 bg-green-600 text-white text-xs font-semibold rounded-full animate-pulse">LIVE</span>
+      case 'completed':
+        return <span className="inline-block px-3 py-1 bg-gray-600 text-white text-xs font-semibold rounded-full">Final</span>
+      default:
+        return <span className="inline-block px-3 py-1 bg-primary text-white text-xs font-semibold rounded-full">Upcoming</span>
+    }
+  }
+
+  const getLocationBadge = (homeAway: string) => {
+    return homeAway === 'Home' ? (
+      <span className="inline-block px-3 py-1 bg-blue-600/20 text-blue-300 text-xs font-semibold rounded-full border border-blue-600/50">Home</span>
+    ) : (
+      <span className="inline-block px-3 py-1 bg-orange-600/20 text-orange-300 text-xs font-semibold rounded-full border border-orange-600/50">Away</span>
+    )
+  }
+
   return (
     <div className="min-h-screen bg-black py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -106,9 +209,113 @@ export default function Athletics() {
           </p>
         </div>
 
-        {/* Sections Grid */}
+        {/* Tickets Button - Prominent */}
+        <div className="mb-12 flex justify-center">
+          <a
+            href="https://gofan.co/"
+            className="inline-block px-8 py-4 bg-gradient-to-r from-primary to-red-700 hover:from-red-700 hover:to-primary rounded-lg text-white font-bold text-lg transition-all transform hover:scale-105 shadow-lg shadow-primary/50"
+          >
+            <div className="flex items-center space-x-3">
+              <Ticket className="w-6 h-6" />
+              <span>Purchase Tickets on GoFan</span>
+            </div>
+          </a>
+        </div>
+
+        {/* Sports Filter */}
+        <div className="mb-8 flex flex-wrap gap-2 justify-center">
+          {sports.map((sport) => (
+            <button
+              key={sport}
+              onClick={() => handleSportFilter(sport)}
+              className="px-4 py-2 rounded-full bg-dark-800 hover:bg-primary text-gray-300 hover:text-white transition-all text-sm font-medium"
+            >
+              {sport}
+            </button>
+          ))}
+        </div>
+
+        {/* Games Schedule Grid */}
+        <div className="mb-16">
+          <h2 className="text-3xl font-bold text-white mb-6">Upcoming Games & Events</h2>
+          <div className="grid grid-cols-1 lg:grid-cols-2 gap-6">
+            {upcomingGames.map((game) => (
+              <div
+                key={game.id}
+                className="glass-effect rounded-lg p-6 card-hover border border-dark-700 hover:border-primary/50 transition-all"
+              >
+                {/* Game Header */}
+                <div className="flex items-start justify-between mb-4">
+                  <div>
+                    <h3 className="text-lg font-bold text-white mb-1">{game.sport}</h3>
+                    <p className="text-sm text-gray-400">{game.opponent}</p>
+                  </div>
+                  <div className="flex flex-col gap-2 items-end">
+                    {getStatusBadge(game.status)}
+                    {getLocationBadge(game.homeAway)}
+                  </div>
+                </div>
+
+                {/* Game Details Grid */}
+                <div className="space-y-3 bg-dark-800/50 rounded-lg p-4 mb-4">
+                  {/* Date & Time */}
+                  <div className="flex items-center space-x-3">
+                    <div className="p-2 bg-primary/20 rounded-lg">
+                      <Calendar className="w-5 h-5 text-primary" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-400">Date & Time</p>
+                      <p className="text-white font-semibold">{game.date} at {game.time}</p>
+                    </div>
+                  </div>
+
+                  {/* Location */}
+                  <div className="flex items-center space-x-3">
+                    <div className="p-2 bg-primary/20 rounded-lg">
+                      <MapPin className="w-5 h-5 text-primary" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-400">Location</p>
+                      <p className="text-white font-semibold">{game.location}</p>
+                      <p className="text-xs text-gray-500">{game.venue}</p>
+                    </div>
+                  </div>
+
+                  {/* Opponent */}
+                  <div className="flex items-center space-x-3">
+                    <div className="p-2 bg-primary/20 rounded-lg">
+                      <Users2 className="w-5 h-5 text-primary" />
+                    </div>
+                    <div>
+                      <p className="text-xs text-gray-400">Opponent</p>
+                      <p className="text-white font-semibold">{game.opponent}</p>
+                    </div>
+                  </div>
+                </div>
+
+                {/* Action Buttons */}
+                <div className="flex gap-3">
+                  <a
+                    href="https://gofan.co/"
+                    className="flex-1 px-4 py-2 bg-primary hover:bg-red-700 text-white font-semibold rounded-lg transition-colors text-center text-sm"
+                  >
+                    Get Tickets
+                  </a>
+                  <a
+                    href="https://fan.hudl.com/usa/nj/bridgewater/organization/24379/bridgewater-raritan-high-school"
+                    className="flex-1 px-4 py-2 bg-dark-800 hover:bg-dark-700 text-white font-semibold rounded-lg transition-colors text-center text-sm"
+                  >
+                    Watch Live
+                  </a>
+                </div>
+              </div>
+            ))}
+          </div>
+        </div>
+
+        {/* Other Sections Grid */}
         <div className="grid grid-cols-1 md:grid-cols-2 gap-8">
-          {sections.map((section) => {
+          {otherSections.map((section) => {
             const Icon = section.icon
             return (
               <div

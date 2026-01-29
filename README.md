@@ -10,12 +10,6 @@ A modern, fully functional student resource hub for Bridgewater-Raritan High Sch
 - Modern, intuitive navigation
 - Responsive design for mobile and desktop
 
-### 📚 **Media Center**
-- Access to research databases (EBSCO, JSTOR, ProQuest, Gale)
-- Library catalog search
-- Media center webpage and resources
-- "In the Know While You Go" newsletter
-
 ### 🏆 **Athletics**
 - Daily and weekly sports events
 - Ticket purchasing (with financial assistance information)
@@ -123,7 +117,6 @@ brhs/
 │   ├── forms/              # Student forms
 │   ├── graduation/         # Graduation info
 │   ├── lunch-menus/        # Lunch menus
-│   ├── media-center/       # Media center resources
 │   ├── nhs/                # National Honor Society
 │   ├── student-council/    # Student council
 │   ├── testing/            # Testing schedule

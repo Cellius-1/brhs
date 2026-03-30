@@ -127,7 +127,7 @@ export default function EventsPage() {
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedCategory, setSelectedCategory] = useState<string>('All')
   const [showFundraisersOnly, setShowFundraisersOnly] = useState(false)
-  const [viewMode, setViewMode] = useState<'list' | 'calendar'>('calendar')
+  const [viewMode, setViewMode] = useState<'list' | 'calendar'>('list')
   const [currentDate, setCurrentDate] = useState(new Date(2026, 3, 1))
   const [selectedDate, setSelectedDate] = useState<Date | null>(null)
   const [savedEvents, setSavedEvents] = useState<string[]>([])
@@ -209,7 +209,10 @@ export default function EventsPage() {
     current = addDays(current, 1)
   }
 
-  const fundraisers = events.filter(e => e.isFundraiser)
+  const featuredFundraisers = filteredEvents
+    .filter(e => e.isFundraiser)
+    .sort((a, b) => ((b.fundraiserCurrent || 0) / (b.fundraiserGoal || 1)) - ((a.fundraiserCurrent || 0) / (a.fundraiserGoal || 1)))
+    .slice(0, 3)
   const monthEvents = filteredEvents.filter(e => isSameMonth(parseEventDate(e.date), currentDate))
 
   const selectedDateEvents = selectedDate ? filteredEvents.filter(e => isSameDay(parseEventDate(e.date), selectedDate)) : []
@@ -267,7 +270,7 @@ export default function EventsPage() {
           <div className="grid grid-cols-2 md:grid-cols-4 gap-3">
             {[
               { label: 'Total Events', value: events.length, icon: Eye, color: 'from-red-500 to-red-600' },
-              { label: 'Fundraisers', value: fundraisers.length, icon: Banknote, color: 'from-amber-500 to-orange-600' },
+              { label: 'Fundraisers', value: events.filter(e => e.isFundraiser).length, icon: Banknote, color: 'from-amber-500 to-orange-600' },
               { label: 'Saved', value: savedEvents.length, icon: Heart, color: 'from-pink-500 to-rose-600' },
               { label: 'This Month', value: monthEvents.length, icon: TrendingUp, color: 'from-cyan-500 to-blue-600' },
             ].map((stat, idx) => (
@@ -552,6 +555,49 @@ export default function EventsPage() {
               exit={{ opacity: 0 }}
               transition={{ duration: 0.3 }}
             >
+              {featuredFundraisers.length > 0 && !showFundraisersOnly && (
+                <div className="mb-8">
+                  <h2 className="text-2xl font-bold text-white mb-4">Featured Fundraisers</h2>
+                  <div className="grid md:grid-cols-2 xl:grid-cols-3 gap-4">
+                    {featuredFundraisers.map((fundraiser) => (
+                      <motion.div
+                        key={fundraiser.id}
+                        whileHover={{ y: -4 }}
+                        className="p-4 rounded-2xl bg-gradient-to-br from-amber-950/40 to-orange-900/20 border border-amber-700/40"
+                      >
+                        <div className="flex items-start justify-between gap-3 mb-3">
+                          <div>
+                            <p className="text-sm font-bold text-white line-clamp-1">{fundraiser.title}</p>
+                            <p className="text-xs text-amber-300/80 mt-1">{fundraiser.organizer}</p>
+                          </div>
+                          <span className="px-2 py-1 rounded-md text-xs font-semibold bg-amber-500/20 text-amber-300 border border-amber-500/40">
+                            Fundraiser
+                          </span>
+                        </div>
+
+                        <div className="mb-3">
+                          <div className="flex justify-between text-xs mb-1">
+                            <span className="text-amber-200">${fundraiser.fundraiserCurrent?.toLocaleString()}</span>
+                            <span className="text-amber-300/80">Goal ${fundraiser.fundraiserGoal?.toLocaleString()}</span>
+                          </div>
+                          <div className="w-full bg-amber-950 rounded-full h-2">
+                            <div
+                              className="bg-gradient-to-r from-amber-500 to-orange-500 h-2 rounded-full"
+                              style={{ width: `${Math.min(((fundraiser.fundraiserCurrent || 0) / (fundraiser.fundraiserGoal || 1)) * 100, 100)}%` }}
+                            />
+                          </div>
+                        </div>
+
+                        <div className="flex items-center justify-between text-xs text-gray-300">
+                          <span>{fundraiser.date}</span>
+                          <span>{Math.round(((fundraiser.fundraiserCurrent || 0) / (fundraiser.fundraiserGoal || 1)) * 100)}% funded</span>
+                        </div>
+                      </motion.div>
+                    ))}
+                  </div>
+                </div>
+              )}
+
               <h2 className="text-3xl font-bold text-white mb-6">
                 {showFundraisersOnly ? 'All Fundraisers' : 'All Events'}
               </h2>
@@ -593,8 +639,9 @@ export default function EventsPage() {
                               {event.category}
                             </span>
                             {event.priority === 'High' && (
-                              <span className="px-3 py-1 rounded-lg text-xs font-bold bg-red-500/20 text-red-400 border border-red-500/30">
-                                ðŸ”¥ High Priority
+                              <span className="px-3 py-1 rounded-lg text-xs font-bold bg-red-500/20 text-red-400 border border-red-500/30 flex items-center gap-1">
+                                <AlertCircle className="w-3 h-3" />
+                                High Priority
                               </span>
                             )}
                             {event.isFundraiser && (

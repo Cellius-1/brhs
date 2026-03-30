@@ -1,6 +1,8 @@
 'use client'
 
 import React, { useState, useMemo } from 'react'
+import Link from 'next/link'
+import { useSearchParams } from 'next/navigation'
 import { Search, Filter, BookOpen, Award, GraduationCap, X } from 'lucide-react'
 
 interface Course {
@@ -16,6 +18,144 @@ interface Course {
   tags: string[]
   dualEnrollment?: string
 }
+
+const concentrationNames = [
+  '3D Design & Production',
+  'Business',
+  'Computer Science',
+  'Engineering & Robotics',
+  'Media & Content Creation',
+  'Music',
+  'Visual Arts',
+] as const
+
+type ConcentrationName = typeof concentrationNames[number]
+
+const concentrationCourseMap: Record<ConcentrationName, string[]> = {
+  '3D Design & Production': [
+    'cad-technology-2',
+    '3d-prototyping',
+    'engineering-computer-graphics',
+    'advanced-ceramics',
+    'fashion-4-h',
+    'ceramics-hand',
+    'ceramics-wheel',
+    'home-interior-design',
+    'intro-to-engineering-design',
+    'cad-technology-1',
+    'cnc-production',
+    'fashion-2',
+    'fashion-3',
+    'fashion-1',
+    'wood-design-1',
+    'service-learning',
+    'capstone-project',
+    '3d-art-design',
+  ],
+  'Business': [
+    'bus-acc-1',
+    'bus-acc-2-h',
+    'bus-ap-business-finance',
+    'bus-ap-macro',
+    'bus-ap-micro',
+    'bus-law',
+    'bus-career',
+    'bus-ent',
+    'bus-fin-plan',
+    'bus-intl',
+    'bus-intro',
+    'bus-lead',
+    'bus-mkt',
+    'service-learning',
+    'capstone-project',
+  ],
+  'Computer Science': [
+    'cs-ap-csp',
+    'cs-ap-csa',
+    'cs-ap-cyber',
+    'cs-adv-topics',
+    'cs-1',
+    'cs-2',
+    'cs-cyber-1',
+    'cs-cyber-2',
+    'cs-data-science',
+    'service-learning',
+    'capstone-project',
+  ],
+  'Engineering & Robotics': [
+    'intro-to-engineering-design',
+    'intro-to-engineering-h',
+    'adv-math-engineering',
+    'principles-of-engineering',
+    'intro-to-electronics',
+    'robotics-concept-design',
+    'robotics-programming',
+    'service-learning',
+    'capstone-project',
+  ],
+  'Media & Content Creation': [
+    'audio-music-engineering',
+    'digital-music-composition',
+    'digital-fine-arts-1',
+    'digital-fine-arts-2',
+    'digital-photography',
+    'filming-video-editing-3',
+    'filming-video-editing-4',
+    'filming-video-editing-2',
+    'filming-video-editing-1',
+    'eng-creative-writing',
+    'advanced-journalism',
+    'eng-intro-creative',
+    'intro-to-screenwriting',
+    'journalism',
+    'sports-journalism',
+    'service-learning',
+    'capstone-project',
+    'filming-video-editing-seminar-h',
+  ],
+  'Music': [
+    'mus-concert-band',
+    'mus-wind-ensemble-h',
+    'mus-symphonic-band-h',
+    'choir-symphonic-h',
+    'choir-mixed',
+    'mus-symphony-orch-h',
+    'choir-treble-h',
+    'mus-string-orch-9',
+    'audio-music-engineering',
+    'digital-music-composition',
+    'service-learning',
+    'mus-guitar-1',
+    'mus-guitar-2',
+    'mus-guitar-3',
+    'mus-ap-theory',
+    'vpa-capstone',
+  ],
+  'Visual Arts': [
+    '3d-art-design',
+    'advanced-studio-art',
+    'art-history',
+    'studio-art',
+    'ap-art-design-drawing',
+    'ap-art-design-2d',
+    'ap-art-history',
+    'advanced-ceramics',
+    'art-meditation',
+    'art-science',
+    'ceramics-hand',
+    'ceramics-wheel',
+    'character-design',
+    'digital-fine-arts-1',
+    'digital-fine-arts-2',
+    'digital-photography',
+    'drawing-sketching',
+    'watercolor',
+    'service-learning',
+    'vpa-capstone',
+  ],
+}
+
+const concentrationTagPrefix = 'Concentration: '
 
 const courses: Course[] = [
 // =========================
@@ -154,15 +294,15 @@ const courses: Course[] = [
 
 {
   id: 'eng-creative-writing',
-  name: 'Comprehensive Creative Writing',
+  name: 'Advanced Creative Writing',
   code: 'ENG-CW',
   department: 'English',
-  credits: 5,
-  grades: [11, 12],
+  credits: 2.5,
+  grades: [10, 11, 12],
   level: 'Elective',
-  description: 'Advanced writing workshop for fiction and creative nonfiction with focus on publication and revision.',
+  description: 'Designed for students with strong interest and aptitude in creative writing. In a structured workshop setting, students write, revise, and refine original fiction and poetry to produce a polished final portfolio while studying exemplary works and engaging in regular peer critique.',
   prerequisites: 'Introduction to Creative Writing',
-  tags: ['Creative Writing', 'Workshop', 'Publishing'],
+  tags: ['Creative Writing', 'Workshop', 'Portfolio'],
   dualEnrollment: 'Seton Hall University',
 },
 {
@@ -639,6 +779,18 @@ const courses: Course[] = [
   description: 'Builds on Cybersecurity I with deeper study of vulnerabilities, defense methods, attack vectors, mitigation, and advanced cryptography; includes cyber-range labs plus ethics and law integration.',
   prerequisites: 'Cybersecurity I',
   tags: ['Cybersecurity', 'Defense', 'Cryptography', 'Ethics'],
+},
+{
+  id: 'cs-ap-cyber',
+  name: 'Advanced Placement Cybersecurity',
+  code: 'CS-AP-CYB',
+  department: 'Computer Science',
+  credits: 5,
+  grades: [10, 11, 12],
+  level: 'AP',
+  prerequisites: 'Cybersecurity I',
+  description: 'Broad introduction to cybersecurity aligned to a first-year college cybersecurity course. Students study threats, vulnerabilities, risk, and defense-in-depth strategies while exploring attacks, mitigations, and detection across physical spaces, networks, devices, data, and applications, and evaluating cybersecurity impacts on individuals, organizations, governments, and societies.',
+  tags: ['Cybersecurity', 'AP', 'Network Security', 'Risk Management'],
 },
 {
   id: 'cs-data-science',
@@ -1317,6 +1469,18 @@ const courses: Course[] = [
   prerequisites: 'Spanish IV Honors or departmental approval',
   description: 'College-level Spanish language course emphasizing interpretive, interpersonal, and presentational communication, advanced grammar, and cultural understanding. Summer assignment required.',
   tags: ['Spanish', 'AP Exam', 'College Credit', 'Summer Assignment'],
+},
+{
+  id: 'wl-ap-spanish-lit',
+  name: 'AP Spanish Literature',
+  code: 'WL-AP-SPLIT',
+  department: 'World Languages',
+  credits: 5,
+  grades: [11, 12],
+  level: 'AP',
+  prerequisites: 'Level IV',
+  description: 'Advanced Placement Spanish Literature course intended for students preparing for the AP examination in May. Equivalent to a third-year college course, with emphasis on interpretive, interpersonal, and presentational communication, vocabulary and idiomatic usage, cultural knowledge, and active communication in oral and written forms. Summer assignment required.',
+  tags: ['Spanish', 'Literature', 'AP Exam', 'College Credit', 'Summer Assignment'],
 },
 {
   id: 'wl-ap-latin',
@@ -2190,15 +2354,14 @@ const courses: Course[] = [
 },
 {
   id: 'theater-company',
-  name: 'Theater Company',
+  name: 'Theater Company (Honors)',
   code: 'TH-COMP',
   department: 'Theater',
   credits: 5,
   grades: [10, 11, 12],
-  level: 'Elective',
-  prerequisites: '5 theater credits or audition',
-  description: 'Advanced production course covering directing, acting, budgeting, and full theatrical production.',
-  tags: ['Theater', 'Advanced Production'],
+  level: 'Honors',
+  description: 'Advanced course in which students take full ownership of theatrical production. Students gain hands-on experience in directing, acting, budgeting, casting, choreography, technical design, and artistic decision-making, culminating in a public presentation of one-act performances.',
+  tags: ['Theater', 'Production', 'Honors', 'Directing'],
 },
 {
   id: 'bus-acc-1',
@@ -2248,6 +2411,18 @@ const courses: Course[] = [
   prerequisites: 'A- or better in Algebra II or Integrated Algebra II/Data Science OR B- or better in Honors Algebra II',
   description: 'College-level analysis of individual and firm decision-making, supply and demand, productivity, efficiency, and equity.',
   tags: ['Economics', 'AP Exam', 'College Credit'],
+},
+{
+  id: 'bus-ap-business-finance',
+  name: 'Advanced Placement Business with Personal Finance',
+  code: 'BUS-AP-BPF',
+  department: 'Business',
+  credits: 5,
+  grades: [10, 11, 12],
+  level: 'AP',
+  prerequisites: 'Minimum grade of A- in Introduction to Business, ability to read a college-level textbook, and express clearly in writing',
+  description: 'Challenging year-long college-level introduction to business focused on real-world business challenges, case studies, and project-based learning. Students explore entrepreneurship, marketing, finance and accounting, and management while developing practical business and personal finance skills for the modern economy.',
+  tags: ['Business', 'Personal Finance', 'AP', 'Entrepreneurship'],
 },
 {
   id: 'bus-law',
@@ -2432,38 +2607,48 @@ const courses: Course[] = [
 },
 {
   id: 'fashion-1',
-  name: 'Fashion Design 1',
+  name: 'Sewing Technique',
   code: 'FASH-1',
   department: 'Fashion Design',
   credits: 2.5,
   grades: [9, 10, 11, 12],
   level: 'Academic',
-  description: 'Introductory hands-on course focused on clothing construction, fabric selection, pattern use, equipment operation, and garment construction while developing personal style, budgeting, and creative collaboration.',
-  tags: ['Fashion', 'Design', 'Sewing'],
+  description: 'Introduces foundational skills and tools used in garment construction and textile projects. Students learn machine and hand-sewing techniques safely while building precision through measuring, pattern reading, fabric selection, seams, hems, and basic alterations.',
+  tags: ['Fashion', 'Sewing', 'Textiles', 'Foundations'],
 },
 {
   id: 'fashion-2',
-  name: 'Fashion Design 2',
+  name: 'Fiber Arts Technique',
   code: 'FASH-2',
   department: 'Fashion Design',
   credits: 2.5,
   grades: [9, 10, 11, 12],
   level: 'Academic',
-  prerequisites: 'Fashion Design 1',
-  description: 'Advanced sewing course emphasizing complex construction techniques, fabric challenges, pattern alterations, needlework design, and creative garment re-engineering.',
-  tags: ['Fashion', 'Advanced Sewing', 'Design'],
+  description: 'Explores creative and technical approaches to textiles beyond traditional garment sewing. Students investigate fibers, yarns, and fabrics while learning embroidery, weaving, dyeing, surface design, and mixed-media textile work with emphasis on texture, pattern, color, and craftsmanship.',
+  tags: ['Fashion', 'Fiber Arts', 'Textiles', 'Design'],
 },
 {
   id: 'fashion-3',
-  name: 'Fashion Design 3',
+  name: 'Jewelry Design',
   code: 'FASH-3',
   department: 'Fashion Design',
   credits: 2.5,
   grades: [10, 11, 12],
   level: 'Academic',
-  prerequisites: 'Fashion Design 2',
-  description: 'Advanced design course where students create original garments through pattern manipulation, digital design tools, fashion history, trend analysis, and independent creative construction.',
-  tags: ['Fashion', 'Design', 'Career Prep'],
+  description: 'Introduces design and construction of wearable art using metals, beads, wire, resin, and alternative materials. Students learn wire wrapping, beading, and basic fabrication while applying design thinking, balance, craftsmanship, and safe tool use to build original pieces and a small portfolio.',
+  tags: ['Fashion', 'Jewelry', 'Wearable Art', 'Design'],
+},
+{
+  id: 'fashion-4-h',
+  name: 'Apparel Design & Creation (Honors)',
+  code: 'FASH-4H',
+  department: 'Fashion Design',
+  credits: 5,
+  grades: [10, 11, 12],
+  level: 'Honors',
+  prerequisites: 'Two or more of the following courses: Fiber Arts Technique, Jewelry Design, Sewing Technique',
+  description: 'Advanced full-year, project-based course focused on the complete design and construction process of original garments. Students move from concept and sketching through pattern modification, fabric selection, fitting, and final construction while developing precision sewing, iterative design, and portfolio-quality work.',
+  tags: ['Fashion', 'Honors', 'Apparel Design', 'Portfolio'],
 },
 {
   id: 'ap-art-design-drawing',
@@ -2755,63 +2940,60 @@ const courses: Course[] = [
 },
 {
   id: 'filming-video-editing-1',
-  name: 'Filming & Video Editing I',
+  name: 'Storytelling',
   code: 'VIDEO-1',
   department: 'Media & Communication',
   credits: 2.5,
   grades: [9, 10, 11, 12],
   level: 'Academic',
   prerequisites: 'None',
-  description: 'Introduces video production and editing tools and workflows. Students produce videos across genres while learning planning, shooting, editing, and teamwork through hands-on projects and media-based instruction.',
-  tags: ['Film', 'Video Editing', 'Production', 'Collaboration'],
+  description: 'Turns ideas into short-form videos built for today\'s platforms. Students learn camera, lighting, audio, and editing while creating content across genres. From concept to final cut, this hands-on course blends creativity, collaboration, and visual storytelling for beginner and experienced creators.',
+  tags: ['Media', 'Video Editing', 'Storytelling', 'Content Creation'],
 },
 {
   id: 'filming-video-editing-2',
-  name: 'Filming & Video Editing II',
+  name: 'Shorts & Reels',
   code: 'VIDEO-2',
   department: 'Media & Communication',
   credits: 2.5,
   grades: [9, 10, 11, 12],
   level: 'Academic',
-  prerequisites: 'Filming & Video Editing I',
-  description: 'Builds on Video I by expanding production and editing skills through additional multi-genre projects. Students continue hands-on work with stronger emphasis on technical growth and collaborative production.',
-  tags: ['Film', 'Video Editing', 'Intermediate', 'Production'],
+  description: 'Takes short-form video production to the next level with advanced editing, transitions, motion graphics, sound design, and effects. Students design videos for real platforms and audiences with focus on pacing, branding, and engagement through fast-paced collaborative projects.',
+  tags: ['Media', 'Video Editing', 'Motion Graphics', 'Branding'],
 },
 {
   id: 'filming-video-editing-3',
-  name: 'Filming & Video Editing III',
+  name: 'Narrative & Documentary Production',
   code: 'VIDEO-3',
   department: 'Media & Communication',
   credits: 2.5,
-  grades: [10, 11, 12],
+  grades: [9, 10, 11, 12],
   level: 'Academic',
-  prerequisites: 'Filming & Video Editing II',
-  description: 'Advanced, primarily hands-on production course that deepens skills developed in earlier levels. Students work with more advanced cameras and editing software while studying select higher-level production elements as needed.',
-  tags: ['Film', 'Advanced Production', 'Editing', 'Cameras'],
+  description: 'Dives into longer-form films, documentaries, interviews, and episodic content. Students plan, script, storyboard, film, light, and edit as production teams, managing projects from pre-production to final cut while mastering advanced cinematic techniques and storytelling structure.',
+  tags: ['Media', 'Documentary', 'Narrative', 'Production'],
 },
 {
   id: 'filming-video-editing-4',
-  name: 'Filming & Video Editing IV',
+  name: 'Podcasting',
   code: 'VIDEO-4',
   department: 'Media & Communication',
   credits: 2.5,
-  grades: [10, 11, 12],
+  grades: [9, 10, 11, 12],
   level: 'Academic',
-  prerequisites: 'Filming & Video Editing III',
-  description: 'Capstone-level video course focused on deeper technical mastery and creative self-expression. Students expand production and editing abilities through projects designed to meet advanced creative and compositional goals.',
-  tags: ['Film', 'Capstone', 'Creative', 'Advanced Editing'],
+  description: 'Students create, record, edit, and publish original podcasts using professional equipment and industry-standard software. Across formats such as storytelling, interviews, sports talk, and true crime, students build scripting, sound design, editing, and promotion skills for today\'s digital media landscape.',
+  tags: ['Media', 'Podcasting', 'Audio Production', 'Branding'],
 },
 {
   id: 'filming-video-editing-seminar-h',
-  name: 'Filming & Video Editing Seminar (H)',
+  name: "The Director's Workshop (Honors)",
   code: 'VIDEO-SEM-H',
   department: 'Media & Communication',
   credits: 2.5,
-  grades: [11, 12],
+  grades: [10, 11, 12],
   level: 'Honors',
-  prerequisites: 'Filming & Video Editing IV (A- or better)',
-  description: 'One-semester honors elective extending Video IV with deeper exploration of advanced production and editing. Students refine technical skills and develop original work for showcases such as Teen Arts Festival submissions and other exhibitions.',
-  tags: ['Honors', 'Film', 'Seminar', 'Showcase'],
+  prerequisites: 'Two or more of the following courses: Storytelling, Shorts & Reels, Narrative & Documentary Production, Podcasting',
+  description: 'Capstone media experience for students ready to lead projects from vision to final cut. Students create polished long-form work using advanced cinematography, editing, and sound design while managing productions, collaborating like professionals, and building standout portfolio pieces for college, careers, or independent media work.',
+  tags: ['Honors', 'Media', 'Capstone', 'Directing'],
 },
 {
   id: 'intro-to-screenwriting',
@@ -2836,6 +3018,19 @@ const courses: Course[] = [
   prerequisites: 'None',
   description: 'Introduces newspaper journalism skills including reporting, interviewing, fact-gathering, note-taking, editing, and proofreading. Students read widely and publish writing in school periodicals.',
   tags: ['Journalism', 'Writing', 'Reporting', 'Publishing'],
+},
+{
+  id: 'advanced-journalism',
+  name: 'Advanced Journalism',
+  code: 'JOURNAL-ADV',
+  department: 'Media & Communication',
+  credits: 2.5,
+  grades: [10, 11, 12],
+  level: 'Academic',
+  prerequisites: 'Journalism or Sports Journalism',
+  description: 'Advanced journalism course building on Journalism and Sports Journalism through deeper reporting, writing, editing, and media analysis. Students pitch stories, conduct interviews, apply AP Style, collaborate in an editorial setting, analyze media coverage, and produce publishable work including required submissions to the BRHS school newspaper.',
+  tags: ['Journalism', 'Reporting', 'Editing', 'AP Style'],
+  dualEnrollment: 'Fairleigh Dickinson University',
 },
 {
   id: 'photo-editing-web-design',
@@ -2899,51 +3094,63 @@ const courses: Course[] = [
 },
 {
   id: 'cnc-production',
-  name: 'CNC Production',
+  name: 'Digital Fabrication',
   code: 'CNC-1',
   department: 'Engineering & Technology',
   credits: 2.5,
   grades: [9, 10, 11, 12],
   level: 'Academic',
   prerequisites: 'None',
-  description: 'Introduces CNC machining as a subtractive manufacturing process used in engineering and production. Students learn CNC routing, digital-to-physical fabrication, and use professional software and a CNC router with tool changer to transform digital designs into finished objects.',
-  tags: ['CNC', 'Manufacturing', 'Engineering', 'Fabrication'],
+  description: 'Introduces CNC technology used in modern manufacturing and design. Students create digital designs and transform them into precise projects while learning how CNC differs from 3D printing and gaining hands-on experience with industry tools that blend creativity, engineering, and production skills.',
+  tags: ['CNC', 'Digital Fabrication', 'Engineering', 'Manufacturing'],
 },
 {
   id: 'cad-technology-1',
-  name: 'Computer-Aided Design Technology I',
+  name: 'Principles of Architecture',
   code: 'CAD-1',
   department: 'Engineering & Technology',
   credits: 5,
   grades: [9, 10, 11, 12],
   level: 'Academic',
   prerequisites: 'None',
-  description: 'Introductory CAD course covering drafting fundamentals, mechanical and architectural drawing, floor plans, and exterior elevations. Students explore 3D modeling and printing using tools such as AutoCAD, Blender, Fusion 360, SketchUp, and TinkerCAD while developing engineering thinking and graphical communication skills.',
-  tags: ['CAD', 'Drafting', '3D Modeling', 'Engineering'],
+  description: 'Introduces architectural design through CAD and 3D modeling tools used by architects and engineers. Students create technical drawings, floor plans, and digital models, then bring designs to life through renderings and simulations while building spatial reasoning, precision, and creative problem-solving.',
+  tags: ['Architecture', 'CAD', '3D Modeling', 'Design'],
 },
 {
   id: 'cad-technology-2',
-  name: 'Computer-Aided Design Technology II',
+  name: 'Architectural Drafting & Design',
   code: 'CAD-2',
   department: 'Engineering & Technology',
   credits: 5,
   grades: [10, 11, 12],
   level: 'Academic',
-  prerequisites: 'Computer-Aided Design Technology I',
-  description: 'Advanced CAD course expanding architectural drafting, site plans, electrical layouts, elevations, cross-sections, and 3D modeling. Students also explore graphic design and typography using vector and raster software while producing professional drawings, scenes, and animations.',
-  tags: ['CAD', 'Architecture', 'Graphic Design', 'Advanced'],
+  prerequisites: 'Principles of Architecture',
+  description: 'Immerses students in advanced architectural workflows using CAD and 3D modeling. Students create site plans, floor plans, elevations, and detailed digital models while blending math, art, and problem-solving in project-based work aligned to architecture, engineering, design, and construction pathways.',
+  tags: ['Architecture', 'CAD', 'Drafting', 'Advanced'],
 },
 {
   id: 'engineering-computer-graphics',
-  name: 'Engineering Computer Graphics',
+  name: 'Digital 3D Modeling',
   code: 'ENG-CG',
   department: 'Engineering & Technology',
   credits: 5,
-  grades: [10, 11, 12],
+  grades: [9, 10, 11, 12],
   level: 'Academic',
   prerequisites: 'None',
-  description: 'Focuses on engineering graphics and pictorial drawing methods including orthographic, isometric, section, and perspective views. Students explore surface development, 3D modeling, and animation using software such as Blender to visualize and render engineering designs.',
-  tags: ['Engineering', 'Graphics', '3D Modeling', 'Visualization'],
+  description: 'Teaches students to transform ideas and sketches into detailed digital creations. Students build technical drawings, accurate 3D models, realistic renders, and basic animations while developing spatial reasoning and design precision for careers in engineering, architecture, game design, product development, and digital media.',
+  tags: ['3D Modeling', 'Design', 'Engineering', 'Digital Media'],
+},
+{
+  id: '3d-prototyping',
+  name: '3D Prototyping',
+  code: 'ENG-3DP',
+  department: 'Engineering & Technology',
+  credits: 2.5,
+  grades: [9, 10, 11, 12],
+  level: 'Academic',
+  prerequisites: 'None',
+  description: 'Hands-on course where students turn ideas into real-world creations using 3D modeling, digital design, and rapid prototyping tools. Students solve creative and technical design challenges while producing objects that can be physically built and developing skills connected to engineering, product design, architecture, and emerging technologies.',
+  tags: ['3D Modeling', 'Prototyping', 'Engineering', 'Design'],
 },
 {
   id: 'intro-to-electronics',
@@ -3019,15 +3226,15 @@ const courses: Course[] = [
 },
 {
   id: 'home-interior-design',
-  name: 'Home & Interior Design',
+  name: 'Interior Design & Styling',
   code: 'HID-1',
   department: 'Design & Technology',
   credits: 2.5,
   grades: [9, 10, 11, 12],
   level: 'Academic',
   prerequisites: 'None',
-  description: 'Introduces students to planning, designing, and executing architectural interiors and furnishings. Emphasizes housing as a human need, design history, cultural and environmental influences, current trends, and hands-on interior design projects while exploring related careers and entrepreneurship.',
-  tags: ['Interior Design', 'Architecture', 'Design', 'Career Prep'],
+  description: 'Introduces creative and practical design of functional interior spaces. Students explore color, texture, lighting, furniture, and textiles through projects in space planning, mood boards, material selection, and styling while considering budget, scale, user needs, comfort, and visual appeal.',
+  tags: ['Interior Design', 'Styling', 'Space Planning', 'Design'],
 },
 {
   id: 'wood-design-1',
@@ -3043,27 +3250,27 @@ const courses: Course[] = [
 },
 {
   id: 'wood-design-2',
-  name: 'Wood Design and Fabrication II',
+  name: 'Fundamentals of Furniture',
   code: 'WOOD-2',
   department: 'Design & Fabrication',
   credits: 5,
   grades: [10, 11, 12],
   level: 'Academic',
-  prerequisites: 'Wood Design and Fabrication I',
-  description: 'Builds on foundational woodworking skills with deeper exploration of design processes, creative expression, cabinet making, and woodturning techniques.',
-  tags: ['Woodworking', 'Cabinetry', 'Fabrication', 'Advanced'],
+  prerequisites: 'Wood Design & Fabrication',
+  description: 'Students design and build high-quality furniture and custom projects by planning, prototyping, and refining pieces based on individual interests. Emphasizes precision, craftsmanship, design history, and self-critique to create polished work blending creativity and function.',
+  tags: ['Woodworking', 'Furniture', 'Craftsmanship', 'Design'],
 },
 {
   id: 'wood-design-3',
-  name: 'Wood Design and Fabrication III',
+  name: 'Fine Woodworking',
   code: 'WOOD-3',
   department: 'Design & Fabrication',
   credits: 5,
   grades: [11, 12],
   level: 'Academic',
-  prerequisites: 'Wood Design and Fabrication I & II',
-  description: 'Advanced, student-directed course emphasizing independent project design, planning, and presentation. Students study historical design styles, furniture design, and apply critical analysis to refine form and function.',
-  tags: ['Woodworking', 'Furniture Design', 'Advanced', 'Independent'],
+  prerequisites: 'Fundamentals of Furniture',
+  description: 'Challenges students to design and craft high-quality wood projects driven by personal interests. Students explore classic and modern design styles while planning, building, and refining detailed pieces to develop professional-level precision, craftsmanship, and critical analysis.',
+  tags: ['Woodworking', 'Fine Craft', 'Design', 'Advanced'],
 },
 {
   id: 'ap-research',
@@ -3139,31 +3346,51 @@ const courses: Course[] = [
 },
 {
   id: 'vpa-capstone',
-  name: 'Visual and Performing Arts Capstone',
+  name: 'Visual & Performing Arts Capstone (Honors)',
   code: 'VPA-CAP',
   department: 'Visual & Performing Arts',
   credits: 2.5,
   grades: [11, 12],
-  level: 'Academic',
-  prerequisites: 'Junior or Senior with at least 10 visual or performing arts credits',
-  description: 'Capstone course where students synthesize prior learning to create and present a comprehensive portfolio in visual or performing arts. Can fulfill the concentration capstone requirement.',
-  tags: ['Capstone', 'Arts', 'Portfolio', 'Advanced'],
+  level: 'Honors',
+  prerequisites: 'Junior or Senior with 10 visual or performing art credits',
+  description: 'Students create and present a portfolio that synthesizes, extends, and reflects on prior learning in one or more art disciplines. This course can satisfy the capstone requirement for the Visual Art or Music concentration when students have completed at least 10 aligned credits before the course starts.',
+  tags: ['Capstone', 'Visual Arts', 'Performing Arts', 'Portfolio', 'Honors'],
 },
 
 ]
 export default function CoursesCatalog() {
+  const searchParams = useSearchParams()
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedDepartment, setSelectedDepartment] = useState<string>('All')
   const [selectedLevel, setSelectedLevel] = useState<string>('All')
   const [selectedGrade, setSelectedGrade] = useState<number | null>(null)
+  const [selectedConcentration, setSelectedConcentration] = useState<string>('All')
   const [showFilters, setShowFilters] = useState(false)
 
-  const departments = ['All', ...Array.from(new Set(courses.map(c => c.department))).sort()]
+  const coursesWithConcentrationTags = useMemo(() => {
+    return courses.map((course) => {
+      const concentrationTags = concentrationNames
+        .filter((name) => concentrationCourseMap[name].includes(course.id))
+        .map((name) => `${concentrationTagPrefix}${name}`)
+
+      if (concentrationTags.length === 0) {
+        return course
+      }
+
+      return {
+        ...course,
+        tags: Array.from(new Set([...course.tags, ...concentrationTags])),
+      }
+    })
+  }, [])
+
+  const departments = ['All', ...Array.from(new Set(coursesWithConcentrationTags.map(c => c.department))).sort()]
   const levels = ['All', 'Academic', 'Honors', 'AP', 'Elective']
   const grades = [9, 10, 11, 12]
+  const concentrationOptions = ['All', ...concentrationNames]
 
   const filteredCourses = useMemo(() => {
-    return courses.filter(course => {
+    return coursesWithConcentrationTags.filter(course => {
       const matchesSearch = 
         course.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
         course.code.toLowerCase().includes(searchTerm.toLowerCase()) ||
@@ -3173,16 +3400,34 @@ export default function CoursesCatalog() {
       const matchesDepartment = selectedDepartment === 'All' || course.department === selectedDepartment
       const matchesLevel = selectedLevel === 'All' || course.level === selectedLevel
       const matchesGrade = !selectedGrade || course.grades.includes(selectedGrade)
+      const matchesConcentration =
+        selectedConcentration === 'All' ||
+        course.tags.includes(`${concentrationTagPrefix}${selectedConcentration}`)
 
-      return matchesSearch && matchesDepartment && matchesLevel && matchesGrade
+      return matchesSearch && matchesDepartment && matchesLevel && matchesGrade && matchesConcentration
     })
-  }, [searchTerm, selectedDepartment, selectedLevel, selectedGrade])
+  }, [searchTerm, selectedDepartment, selectedLevel, selectedGrade, selectedConcentration, coursesWithConcentrationTags])
 
   const clearFilters = () => {
     setSelectedDepartment('All')
     setSelectedLevel('All')
     setSelectedGrade(null)
+    setSelectedConcentration('All')
   }
+
+  React.useEffect(() => {
+    const departmentParam = searchParams.get('department')
+    const searchParam = searchParams.get('q')
+
+    if (departmentParam && departments.includes(departmentParam)) {
+      setSelectedDepartment(departmentParam)
+      setShowFilters(true)
+    }
+
+    if (searchParam) {
+      setSearchTerm(searchParam)
+    }
+  }, [searchParams, departments])
 
   return (
     <div className="min-h-screen bg-black py-6">
@@ -3195,6 +3440,13 @@ export default function CoursesCatalog() {
           <p className="text-gray-400">
             Explore 400+ courses
           </p>
+          <Link
+            href="/courses/concentrations"
+            className="inline-flex items-center gap-2 mt-4 px-4 py-2 bg-dark-800 border border-dark-700 rounded-2xl text-sm text-white hover:border-red-600/60 transition-colors"
+          >
+            <BookOpen className="w-4 h-4 text-red-500" />
+            View BR Career Concentrations
+          </Link>
         </div>
 
         {/* Search and Filter Bar */}
@@ -3218,7 +3470,7 @@ export default function CoursesCatalog() {
           >
             <Filter className="w-5 h-5" />
             <span>Filters</span>
-            {(selectedDepartment !== 'All' || selectedLevel !== 'All' || selectedGrade) && (
+            {(selectedDepartment !== 'All' || selectedLevel !== 'All' || selectedGrade || selectedConcentration !== 'All') && (
               <span className="bg-primary text-white px-2 py-0.5 rounded-full text-xs">Active</span>
             )}
           </button>
@@ -3236,7 +3488,7 @@ export default function CoursesCatalog() {
                 </button>
               </div>
 
-              <div className="grid grid-cols-1 md:grid-cols-3 gap-3">
+              <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-3">
                 {/* Department Filter */}
                 <div>
                   <label className="block text-xs font-medium text-gray-400 mb-2">Department</label>
@@ -3276,6 +3528,20 @@ export default function CoursesCatalog() {
                     <option value="">All Grades</option>
                     {grades.map(grade => (
                       <option key={grade} value={grade}>Grade {grade}</option>
+                    ))}
+                  </select>
+                </div>
+
+                {/* Concentration Filter */}
+                <div>
+                  <label className="block text-xs font-medium text-gray-400 mb-2">Career Concentration</label>
+                  <select
+                    value={selectedConcentration}
+                    onChange={(e) => setSelectedConcentration(e.target.value)}
+                    className="w-full px-3 py-2.5 bg-dark-900 border border-dark-700 rounded-xl text-sm text-white focus:outline-none focus:border-red-600"
+                  >
+                    {concentrationOptions.map((concentration) => (
+                      <option key={concentration} value={concentration}>{concentration}</option>
                     ))}
                   </select>
                 </div>
@@ -3336,11 +3602,23 @@ export default function CoursesCatalog() {
                     DE: {course.dualEnrollment}
                   </span>
                 )}
-                {course.tags.slice(0, 3).map((tag, idx) => (
-                  <span key={idx} className="px-2.5 py-1 rounded-full text-xs font-medium bg-dark-900/50 text-gray-400 border border-dark-600">
-                    {tag}
-                  </span>
-                ))}
+                {/* Concentration Tags - Always Show First */}
+                {course.tags
+                  .filter(tag => tag.startsWith(concentrationTagPrefix))
+                  .map((tag, idx) => (
+                    <span key={`conc-${idx}`} className="px-2.5 py-1 rounded-full text-xs font-medium bg-red-500/10 text-red-400 border border-red-500/30">
+                      {tag}
+                    </span>
+                  ))}
+                {/* Regular Tags */}
+                {course.tags
+                  .filter(tag => !tag.startsWith(concentrationTagPrefix))
+                  .slice(0, 3)
+                  .map((tag, idx) => (
+                    <span key={`tag-${idx}`} className="px-2.5 py-1 rounded-full text-xs font-medium bg-dark-900/50 text-gray-400 border border-dark-600">
+                      {tag}
+                    </span>
+                  ))}
               </div>
             </div>
           ))}

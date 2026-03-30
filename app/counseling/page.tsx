@@ -1,8 +1,136 @@
 'use client'
 
-import { Heart, Calendar, Phone, Mail, Award, Users, BookOpen, ClipboardCheck } from 'lucide-react'
+import { useState } from 'react'
+import { Heart, Phone, Mail, Award, Users, ExternalLink, Info } from 'lucide-react'
+
+type Counselor = {
+  name: string
+  room: string
+  ext: string
+  grade9: string
+  grade10: string
+  grade11: string
+  grade12: string
+  bookmeLink: string
+}
+
+const counselors: Counselor[] = [
+  {
+    name: 'Anthony Appezzato',
+    room: '924',
+    ext: '47-7213',
+    grade9: 'Duo - Gu',
+    grade10: 'Chf - Fa, Ric - Riv',
+    grade11: 'Brj - Cori, Pant - Park',
+    grade12: 'Blon - Brah, Fam - Fri, Khao - Kote, Marj - Martine, O - Og, Thon - Tor',
+    bookmeLink: 'https://youcanbook.me/',
+  },
+  {
+    name: 'Xavier Brooks',
+    room: '923',
+    ext: '47-7219',
+    grade9: "O'n - Pol",
+    grade10: 'Loq - Mil, Riw - Roj',
+    grade11: 'K - Lan, Parl - Pas',
+    grade12: 'Frj - He, Martinf - Math',
+    bookmeLink: 'https://youcanbook.me/',
+  },
+  {
+    name: 'Justina Del Rio',
+    room: '917',
+    ext: '47-7215',
+    grade9: 'Tj - Z',
+    grade10: 'Rok - Roz, Shef - Ul',
+    grade11: 'Pat - Reo, Shah',
+    grade12: 'Mati - Mene, Oh - Ramak',
+    bookmeLink: 'https://youcanbook.me/',
+  },
+  {
+    name: 'Bryan Devlin',
+    room: '915',
+    ext: '47-7212',
+    grade9: 'A - Bham',
+    grade10: 'Rp - Rz, Um - Z',
+    grade11: 'Pau - Perr, Shai - U',
+    grade12: 'Menf - Mitc, Ramal - Sci',
+    bookmeLink: 'https://youcanbook.me/',
+  },
+  {
+    name: 'Suzanne Geoghan',
+    room: '910',
+    ext: '47-7214',
+    grade9: 'Pom - Sar',
+    grade10: 'Mim - Par, S - Sai',
+    grade11: 'Lao - Mat, Pers - Ph',
+    grade12: 'Hf - Khan, Mitd - Moh',
+    bookmeLink: 'https://youcanbook.me/',
+  },
+  {
+    name: 'Elle Greulich',
+    room: '911',
+    ext: '47-7210',
+    grade9: 'Kellb - Maru',
+    grade10: 'Hb - Khan, Saj - San',
+    grade11: 'Eo - G, Pi - Poc',
+    grade12: 'Brai - Cif, Moi - Mora',
+    bookmeLink: 'https://youcanbook.me/',
+  },
+  {
+    name: 'Laura Karns',
+    room: '918',
+    ext: '47-7216',
+    grade9: "Marv - O'm",
+    grade10: 'Khao - Lop, Schf - Scho',
+    grade11: 'H - J, Prat - Rad',
+    grade12: 'Cig - Fal, Mue - Murd',
+    bookmeLink: 'https://youcanbook.me/',
+  },
+  {
+    name: 'Tito Santos',
+    room: '920',
+    ext: '47-7217',
+    grade9: 'Gv - Kella',
+    grade10: 'Fb - Ha, Schp - Sen',
+    grade11: 'Corj - En, Rae - Rama',
+    grade12: 'A - Blom, Mure - Nal',
+    bookmeLink: 'https://youcanbook.me/',
+  },
+  {
+    name: 'Evan Seavey',
+    room: '919',
+    ext: '47-7218',
+    grade9: 'Bhao - Chom',
+    grade10: 'A - Ba, Seo - Shap',
+    grade11: 'Ramb - Redd, V - Z',
+    grade12: 'Nam - Ng, Scj - Thom',
+    bookmeLink: 'https://youcanbook.me/',
+  },
+  {
+    name: 'Imrin Thind',
+    room: '914',
+    ext: '47-7221',
+    grade9: 'Sas - Ti',
+    grade10: 'Pas - Rib, Shaq - Shee',
+    grade11: 'Mau - Pans, Rede - Ren',
+    grade12: 'Kotf - Mari, Nga - Nz',
+    bookmeLink: 'https://youcanbook.me/',
+  },
+  {
+    name: 'Sapphire Toussaint',
+    room: '913',
+    ext: '47-7222',
+    grade9: 'Chon - Dun',
+    grade10: 'Bb - Che, Sao - Sche',
+    grade11: 'A - Bri, Pod - Pras',
+    grade12: 'Morb - Mud, Tos - Z',
+    bookmeLink: 'https://youcanbook.me/',
+  },
+]
 
 export default function Counseling() {
+  const [selectedCounselorName, setSelectedCounselorName] = useState(counselors[0].name)
+  const selectedCounselor = counselors.find(c => c.name === selectedCounselorName) || counselors[0]
+
   return (
     <div className="min-h-screen bg-black py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -38,39 +166,110 @@ export default function Counseling() {
           </div>
         </div>
 
-        {/* Contacting Your Counselor */}
+        {/* Counselor Finder */}
         <div className="glass-effect rounded-lg p-8 mb-8">
           <div className="flex items-center mb-6">
             <Users className="w-8 h-8 text-primary mr-3" />
-            <h2 className="text-3xl font-bold text-white">Contacting Your Counselor</h2>
+            <h2 className="text-3xl font-bold text-white">Contact Your Counselor</h2>
           </div>
-          <p className="text-gray-300 mb-6">
-            Students can obtain the assistance of a counselor in several ways:
+          <div className="bg-dark-800 rounded-lg p-5 border border-dark-700 mb-6">
+            <label htmlFor="counselor-select" className="block text-sm font-semibold text-gray-300 mb-2">
+              Choose your counselor
+            </label>
+            <select
+              id="counselor-select"
+              value={selectedCounselorName}
+              onChange={(e) => setSelectedCounselorName(e.target.value)}
+              className="w-full rounded-lg border border-dark-600 bg-dark-900 text-white px-3 py-2 focus:outline-none focus:ring-2 focus:ring-primary"
+              aria-describedby="counselor-select-help"
+            >
+              {counselors.map((counselor) => (
+                <option key={counselor.name} value={counselor.name}>
+                  {counselor.name}
+                </option>
+              ))}
+            </select>
+            <p id="counselor-select-help" className="text-xs text-gray-400 mt-2">
+              Select your counselor to view room number, extension, student assignment split, and booking access.
+            </p>
+          </div>
+
+          <div className="grid grid-cols-1 lg:grid-cols-3 gap-4">
+            <div className="bg-dark-800 rounded-lg p-5 border border-dark-700 lg:col-span-2">
+              <h3 className="text-xl font-bold text-white mb-1">{selectedCounselor.name}</h3>
+              <p className="text-gray-400 text-sm mb-4">Room {selectedCounselor.room} | Ext. {selectedCounselor.ext}</p>
+
+              <h4 className="text-sm uppercase tracking-wide text-primary font-semibold mb-2">Students Served</h4>
+              <div className="grid grid-cols-1 md:grid-cols-2 gap-3 text-sm">
+                <div className="rounded-lg border border-dark-700 bg-dark-900 p-3">
+                  <p className="text-gray-400">Grade 9</p>
+                  <p className="text-white">{selectedCounselor.grade9}</p>
+                </div>
+                <div className="rounded-lg border border-dark-700 bg-dark-900 p-3">
+                  <p className="text-gray-400">Grade 10</p>
+                  <p className="text-white">{selectedCounselor.grade10}</p>
+                </div>
+                <div className="rounded-lg border border-dark-700 bg-dark-900 p-3">
+                  <p className="text-gray-400">Grade 11</p>
+                  <p className="text-white">{selectedCounselor.grade11}</p>
+                </div>
+                <div className="rounded-lg border border-dark-700 bg-dark-900 p-3">
+                  <p className="text-gray-400">Grade 12</p>
+                  <p className="text-white">{selectedCounselor.grade12}</p>
+                </div>
+              </div>
+            </div>
+
+            <div className="bg-primary/10 border border-primary/30 rounded-lg p-5">
+              <h4 className="text-lg font-bold text-white mb-2">BookMe Link</h4>
+              <p className="text-sm text-gray-300 mb-4">
+                Open the link, and use it to book an available time with <strong>{selectedCounselor.name}</strong>.
+              </p>
+              <a
+                href={selectedCounselor.bookmeLink}
+                target="_blank"
+                rel="noopener noreferrer"
+                className="inline-flex items-center gap-2 px-4 py-2 rounded-lg bg-primary text-black font-semibold hover:opacity-90 transition-opacity"
+                aria-label={`Open BookMe for ${selectedCounselor.name}`}
+              >
+                Open BookMe
+                <ExternalLink className="w-4 h-4" />
+              </a>
+              <p className="text-xs text-gray-400 mt-3">
+                If your counselor page does not appear right away, use your counselor Google Classroom link to go directly to their booking page.
+              </p>
+            </div>
+          </div>
+
+          <div className="mt-6 p-4 rounded-lg bg-dark-800 border border-dark-700">
+            <p className="text-gray-300 text-sm">
+              Parents/guardians may also contact the counselor directly by phone or email for support.
+            </p>
+          </div>
+        </div>
+
+        {/* Hope Squad */}
+        <div className="glass-effect rounded-lg p-8 mb-8">
+          <div className="flex items-center mb-4">
+            <Info className="w-8 h-8 text-primary mr-3" />
+            <h2 className="text-3xl font-bold text-white">Need Immediate Support? Contact Hope Squad Club</h2>
+          </div>
+          <p className="text-gray-300 mb-4">
+            If you need to talk to someone, reach out to <strong>Hope Squad Club</strong> or the Counseling Office.
           </p>
+
           <div className="grid grid-cols-1 md:grid-cols-2 gap-4">
             <div className="bg-dark-800 rounded-lg p-4 border border-dark-700">
-              <div className="flex items-start">
-                <span className="w-2 h-2 bg-primary rounded-full mr-3 mt-2 flex-shrink-0"></span>
-                <p className="text-gray-300">Ask a teacher for permission to see the counselor</p>
-              </div>
+              <h3 className="text-lg font-semibold text-primary mb-2">Google Classroom</h3>
+              <p className="text-gray-300">Class: Hope Squad Club</p>
+              <p className="text-sm text-gray-400 mt-1">Join code is shared by counselors and advisors.</p>
             </div>
             <div className="bg-dark-800 rounded-lg p-4 border border-dark-700">
-              <div className="flex items-start">
-                <span className="w-2 h-2 bg-primary rounded-full mr-3 mt-2 flex-shrink-0"></span>
-                <p className="text-gray-300">Go to your counselor's Google Classroom and select the "youcanbookme" link</p>
-              </div>
-            </div>
-            <div className="bg-dark-800 rounded-lg p-4 border border-dark-700">
-              <div className="flex items-start">
-                <span className="w-2 h-2 bg-primary rounded-full mr-3 mt-2 flex-shrink-0"></span>
-                <p className="text-gray-300">Ask a parent/guardian to make initial contact with the counselor</p>
-              </div>
-            </div>
-            <div className="bg-dark-800 rounded-lg p-4 border border-dark-700">
-              <div className="flex items-start">
-                <span className="w-2 h-2 bg-primary rounded-full mr-3 mt-2 flex-shrink-0"></span>
-                <p className="text-gray-300">Parents can call or email the counselor with any questions or concerns</p>
-              </div>
+              <h3 className="text-lg font-semibold text-primary mb-2">How to Reach Out</h3>
+              <p className="text-gray-300">Visit the Counseling Office or email:</p>
+              <a href="mailto:HSGuidance@brrsd.k12.nj.us" className="text-primary hover:underline break-all">
+                HSGuidance@brrsd.k12.nj.us
+              </a>
             </div>
           </div>
         </div>
@@ -108,110 +307,6 @@ export default function Counseling() {
           </div>
         </div>
 
-        {/* Testing Information */}
-        <div className="glass-effect rounded-lg p-8">
-          <div className="flex items-center mb-6">
-            <ClipboardCheck className="w-8 h-8 text-primary mr-3" />
-            <h2 className="text-3xl font-bold text-white">Testing Information</h2>
-          </div>
-
-          {/* SAT Testing */}
-          <div className="mb-10">
-            <h3 className="text-2xl font-bold text-white mb-4">SAT Test Dates 2025-2026</h3>
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
-                <thead>
-                  <tr className="border-b border-dark-700">
-                    <th className="py-3 px-4 text-gray-400 font-semibold">Test Date</th>
-                    <th className="py-3 px-4 text-gray-400 font-semibold">Registration Deadline</th>
-                    <th className="py-3 px-4 text-gray-400 font-semibold">Late Registration*</th>
-                  </tr>
-                </thead>
-                <tbody className="text-gray-300">
-                  <tr className="border-b border-dark-800">
-                    <td className="py-3 px-4 font-medium">Nov. 8, 2025</td>
-                    <td className="py-3 px-4">Oct. 24, 2025</td>
-                    <td className="py-3 px-4">Oct. 28, 2025</td>
-                  </tr>
-                  <tr className="border-b border-dark-800">
-                    <td className="py-3 px-4 font-medium">Dec. 6, 2025</td>
-                    <td className="py-3 px-4">Nov. 21, 2025</td>
-                    <td className="py-3 px-4">Nov. 25, 2025</td>
-                  </tr>
-                  <tr className="border-b border-dark-800">
-                    <td className="py-3 px-4 font-medium">March 14, 2026</td>
-                    <td className="py-3 px-4">Feb. 27, 2026</td>
-                    <td className="py-3 px-4">March 3, 2026</td>
-                  </tr>
-                  <tr className="border-b border-dark-800">
-                    <td className="py-3 px-4 font-medium">May 2, 2026</td>
-                    <td className="py-3 px-4">Apr. 17, 2026</td>
-                    <td className="py-3 px-4">April 21, 2026</td>
-                  </tr>
-                  <tr className="border-b border-dark-800">
-                    <td className="py-3 px-4 font-medium">June 6, 2026</td>
-                    <td className="py-3 px-4">May 22, 2026</td>
-                    <td className="py-3 px-4">May 26, 2026</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-            <div className="mt-3 p-4 bg-dark-800 rounded-lg border border-dark-700">
-              <p className="text-sm text-gray-300">
-                <strong className="text-primary">*Device Borrowing:</strong> Students who need to borrow a device from College Board will need to register and request their device earlier than the registration deadline—at least 30 days before test day.
-              </p>
-            </div>
-          </div>
-
-          {/* ACT Testing */}
-          <div>
-            <h3 className="text-2xl font-bold text-white mb-4">ACT Test Dates 2025-2026</h3>
-            <div className="overflow-x-auto">
-              <table className="w-full text-left border-collapse">
-                <thead>
-                  <tr className="border-b border-dark-700">
-                    <th className="py-3 px-4 text-gray-400 font-semibold">Test Date</th>
-                    <th className="py-3 px-4 text-gray-400 font-semibold">Regular Deadline</th>
-                    <th className="py-3 px-4 text-gray-400 font-semibold">Late Deadline</th>
-                    <th className="py-3 px-4 text-gray-400 font-semibold">Standby Deadline</th>
-                  </tr>
-                </thead>
-                <tbody className="text-gray-300">
-                  <tr className="border-b border-dark-800">
-                    <td className="py-3 px-4 font-medium">December 13, 2025</td>
-                    <td className="py-3 px-4">November 7</td>
-                    <td className="py-3 px-4">November 24</td>
-                    <td className="py-3 px-4">December 5</td>
-                  </tr>
-                  <tr className="border-b border-dark-800">
-                    <td className="py-3 px-4 font-medium">February 14, 2026</td>
-                    <td className="py-3 px-4">January 9</td>
-                    <td className="py-3 px-4">January 23</td>
-                    <td className="py-3 px-4">February 6</td>
-                  </tr>
-                  <tr className="border-b border-dark-800">
-                    <td className="py-3 px-4 font-medium">April 11, 2026</td>
-                    <td className="py-3 px-4">March 6</td>
-                    <td className="py-3 px-4">March 24</td>
-                    <td className="py-3 px-4">April 3</td>
-                  </tr>
-                  <tr className="border-b border-dark-800">
-                    <td className="py-3 px-4 font-medium">June 13, 2026</td>
-                    <td className="py-3 px-4">May 8</td>
-                    <td className="py-3 px-4">May 29</td>
-                    <td className="py-3 px-4">June 5</td>
-                  </tr>
-                  <tr className="border-b border-dark-800">
-                    <td className="py-3 px-4 font-medium">July 11, 2026*</td>
-                    <td className="py-3 px-4">June 5</td>
-                    <td className="py-3 px-4">June 24</td>
-                    <td className="py-3 px-4">July 3</td>
-                  </tr>
-                </tbody>
-              </table>
-            </div>
-          </div>
-        </div>
       </div>
     </div>
   )

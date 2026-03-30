@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import Image from 'next/image'
 import { Mail, Phone, MapPin } from 'lucide-react'
 
 export default function Footer() {
@@ -8,6 +9,15 @@ export default function Footer() {
         {/* Mobile: Compact Footer */}
         <div className="md:hidden space-y-4">
           <div className="text-center">
+            <div className="mb-3 flex justify-center">
+              <Image
+                src="/branding/BRSD PBSIS Logo.png"
+                alt="BRHS PBSIS logo"
+                width={72}
+                height={72}
+                className="h-16 w-16 object-contain"
+              />
+            </div>
             <h3 className="text-base font-bold text-white mb-2">Bridgewater-Raritan High School</h3>
             <p className="text-gray-400 text-xs px-4">
               Your comprehensive resource center for everything BRHS.
@@ -26,8 +36,13 @@ export default function Footer() {
           </div>
 
           <div className="text-center pt-3 border-t border-dark-700">
+            <p className="mb-2">
+              <Link href="/feedback" className="text-primary text-xs hover:underline">
+                Website Feedback
+              </Link>
+            </p>
             <p className="text-gray-500 text-xs">
-              &copy; {new Date().getFullYear()} BRHS • Go Panthers! 🐾
+              &copy; {new Date().getFullYear()} BRHS • Go Panthers
             </p>
           </div>
         </div>
@@ -37,6 +52,15 @@ export default function Footer() {
           <div className="grid grid-cols-1 md:grid-cols-3 gap-8">
             {/* About */}
             <div>
+              <div className="mb-4">
+                <Image
+                  src="/branding/Secondary.png"
+                  alt="Bridgewater-Raritan High School wordmark"
+                  width={700}
+                  height={260}
+                  className="w-full max-w-xs h-auto"
+                />
+              </div>
               <h3 className="text-lg font-bold text-white mb-4">Bridgewater-Raritan High School</h3>
               <p className="text-gray-400 text-sm">
                 Your comprehensive resource center for everything BRHS. 
@@ -61,6 +85,11 @@ export default function Footer() {
                 <li>
                   <Link href="/counseling" className="text-gray-400 hover:text-primary text-sm transition-colors">
                     Counseling Services
+                  </Link>
+                </li>
+                <li>
+                  <Link href="/feedback" className="text-gray-400 hover:text-primary text-sm transition-colors">
+                    Website Feedback
                   </Link>
                 </li>
               </ul>
@@ -88,7 +117,7 @@ export default function Footer() {
 
           <div className="mt-8 pt-8 border-t border-dark-700 text-center">
             <p className="text-gray-400 text-sm">
-              &copy; {new Date().getFullYear()} BRHS Student Hub. All rights reserved. | Go Panthers! 🐾
+              &copy; {new Date().getFullYear()} BRHS Student Hub. All rights reserved. | Go Panthers
             </p>
           </div>
         </div>

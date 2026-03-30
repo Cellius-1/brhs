@@ -1,6 +1,7 @@
 'use client'
 
 import { useState } from 'react'
+import Link from 'next/link'
 import { GraduationCap, Calendar, FileText, Users, BookOpen, Award, CheckCircle, ChevronDown, AlertCircle, Languages, DollarSign } from 'lucide-react'
 
 export default function Graduation() {
@@ -90,87 +91,87 @@ export default function Graduation() {
               <div className="px-6 pb-6 border-t border-dark-700">
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6 pt-6">
                   <div className="space-y-4">
-                    <div className="bg-dark-800 rounded-xl p-4">
+                    <Link href="/courses?department=English" className="block bg-dark-800 rounded-xl p-4 border border-transparent hover:border-red-600/40 transition-colors">
                       <div className="flex justify-between items-center mb-2">
                         <h3 className="font-semibold text-white">English Language Arts</h3>
                         <span className="px-3 py-1 bg-primary/20 text-primary rounded-full text-sm font-bold">20 credits</span>
                       </div>
                       <p className="text-gray-400 text-sm">Grades 9-12 standards aligned</p>
-                    </div>
+                    </Link>
 
-                    <div className="bg-dark-800 rounded-xl p-4">
+                    <Link href="/courses?department=Mathematics" className="block bg-dark-800 rounded-xl p-4 border border-transparent hover:border-red-600/40 transition-colors">
                       <div className="flex justify-between items-center mb-2">
                         <h3 className="font-semibold text-white">Mathematics</h3>
                         <span className="px-3 py-1 bg-primary/20 text-primary rounded-full text-sm font-bold">15 credits</span>
                       </div>
                       <p className="text-gray-400 text-sm">Including Algebra I, Geometry, and a third year building on both</p>
-                    </div>
+                    </Link>
 
-                    <div className="bg-dark-800 rounded-xl p-4">
+                    <Link href="/courses?department=Science" className="block bg-dark-800 rounded-xl p-4 border border-transparent hover:border-red-600/40 transition-colors">
                       <div className="flex justify-between items-center mb-2">
                         <h3 className="font-semibold text-white">Science</h3>
                         <span className="px-3 py-1 bg-primary/20 text-primary rounded-full text-sm font-bold">15 credits</span>
                       </div>
                       <p className="text-gray-400 text-sm">Laboratory Biology, plus Chemistry/Environmental/Physics, plus one additional lab science</p>
-                    </div>
+                    </Link>
 
-                    <div className="bg-dark-800 rounded-xl p-4">
+                    <Link href="/courses?department=Social%20Studies" className="block bg-dark-800 rounded-xl p-4 border border-transparent hover:border-red-600/40 transition-colors">
                       <div className="flex justify-between items-center mb-2">
                         <h3 className="font-semibold text-white">Social Studies</h3>
                         <span className="px-3 py-1 bg-primary/20 text-primary rounded-full text-sm font-bold">15 credits</span>
                       </div>
                       <p className="text-gray-400 text-sm">Including World History (5 credits) with civics, economics, geography integration</p>
-                    </div>
+                    </Link>
 
-                    <div className="bg-dark-800 rounded-xl p-4">
+                    <Link href="/courses?department=Business" className="block bg-dark-800 rounded-xl p-4 border border-transparent hover:border-red-600/40 transition-colors">
                       <div className="flex justify-between items-center mb-2">
                         <h3 className="font-semibold text-white">Financial Literacy</h3>
                         <span className="px-3 py-1 bg-primary/20 text-primary rounded-full text-sm font-bold">2.5 credits</span>
                       </div>
                       <p className="text-gray-400 text-sm">Business, economic, and entrepreneurial literacy</p>
-                    </div>
+                    </Link>
                   </div>
 
                   <div className="space-y-4">
-                    <div className="bg-dark-800 rounded-xl p-4">
+                    <Link href="/courses?department=Physical%20Education" className="block bg-dark-800 rounded-xl p-4 border border-transparent hover:border-red-600/40 transition-colors">
                       <div className="flex justify-between items-center mb-2">
                         <h3 className="font-semibold text-white">Health & Physical Education</h3>
                         <span className="px-3 py-1 bg-primary/20 text-primary rounded-full text-sm font-bold">3.75 credits</span>
                       </div>
                       <p className="text-gray-400 text-sm">150 minutes per week during each year of enrollment</p>
-                    </div>
+                    </Link>
 
-                    <div className="bg-dark-800 rounded-xl p-4">
+                    <Link href="/courses?department=Visual%20%26%20Performing%20Arts" className="block bg-dark-800 rounded-xl p-4 border border-transparent hover:border-red-600/40 transition-colors">
                       <div className="flex justify-between items-center mb-2">
                         <h3 className="font-semibold text-white">Visual & Performing Arts</h3>
                         <span className="px-3 py-1 bg-primary/20 text-primary rounded-full text-sm font-bold">5 credits</span>
                       </div>
                       <p className="text-gray-400 text-sm">Art, music, drama, or dance</p>
-                    </div>
+                    </Link>
 
-                    <div className="bg-dark-800 rounded-xl p-4">
+                    <Link href="/courses?department=World%20Languages" className="block bg-dark-800 rounded-xl p-4 border border-transparent hover:border-red-600/40 transition-colors">
                       <div className="flex justify-between items-center mb-2">
                         <h3 className="font-semibold text-white">World Languages</h3>
                         <span className="px-3 py-1 bg-primary/20 text-primary rounded-full text-sm font-bold">5 credits</span>
                       </div>
                       <p className="text-gray-400 text-sm">Or demonstration of Novice-High proficiency (ACTFL standards)</p>
-                    </div>
+                    </Link>
 
-                    <div className="bg-dark-800 rounded-xl p-4">
+                    <Link href="/courses?department=Interdisciplinary%20Studies" className="block bg-dark-800 rounded-xl p-4 border border-transparent hover:border-red-600/40 transition-colors">
                       <div className="flex justify-between items-center mb-2">
                         <h3 className="font-semibold text-white">21st Century Life & Careers</h3>
                         <span className="px-3 py-1 bg-primary/20 text-primary rounded-full text-sm font-bold">5 credits</span>
                       </div>
                       <p className="text-gray-400 text-sm">Or career-technical education</p>
-                    </div>
+                    </Link>
 
-                    <div className="bg-dark-800 rounded-xl p-4">
+                    <Link href="/courses" className="block bg-dark-800 rounded-xl p-4 border border-transparent hover:border-red-600/40 transition-colors">
                       <div className="flex justify-between items-center mb-2">
                         <h3 className="font-semibold text-white">Electives</h3>
                         <span className="px-3 py-1 bg-primary/20 text-primary rounded-full text-sm font-bold">34.75 credits</span>
                       </div>
                       <p className="text-gray-400 text-sm">Additional courses to reach 120 credit minimum</p>
-                    </div>
+                    </Link>
                   </div>
                 </div>
 

@@ -6,6 +6,75 @@ import { ClipboardList, Calendar, FileText, ChevronDown } from 'lucide-react'
 export default function Testing() {
   const [expandedWeek, setExpandedWeek] = useState<'week1' | 'week2' | null>('week1')
 
+  const statewideAssessments = [
+    {
+      assessment: 'Dynamic Learning Maps (DLM) Instructionally Embedded (IE) Model: ELA, Math & Science (Optional)',
+      grades: 'ELA/Math: 3-8, 11 | Science: 5, 8, 11',
+      window: 'September 9 through December 19, 2025',
+      notes: '',
+    },
+    {
+      assessment: 'New Jersey Graduation Proficiency Assessment (NJGPA) Fall Administration',
+      grades: '11 and 12',
+      window: 'October 6 through October 10, 2025',
+      notes: 'Makeup: October 14 through October 17, 2025. Participation includes class of 2026 students still needing ELA and/or Math requirement.',
+    },
+    {
+      assessment: 'New Jersey Graduation Proficiency Assessment - Adaptive (NJGPA-Adaptive) Fall Field Test',
+      grades: '11',
+      window: 'October 27 through November 14, 2025',
+      notes: 'No testing on November 4, 6, 7, or 11.',
+    },
+    {
+      assessment: 'New Jersey Student Learning Assessments - Adaptive (NJSLA-Adaptive) Fall Field Test',
+      grades: 'ELA: 4-10 | Math: 4 through HS (Algebra I, Geometry, Algebra II based on course completion during 2024-2025)',
+      window: 'October 27 through November 14, 2025',
+      notes: 'No testing on November 4, 6, 7, or 11.',
+    },
+    {
+      assessment: 'Portfolio Appeals',
+      grades: '12',
+      window: 'January 6 through May 1, 2026',
+      notes: '',
+    },
+    {
+      assessment: 'WIDA ACCESS and WIDA Alternate ACCESS',
+      grades: 'ACCESS: K-12 | Alt. ACCESS: 1-12',
+      window: 'February 2 through March 27, 2026',
+      notes: 'Makeup: March 30 through April 3, 2026.',
+    },
+    {
+      assessment: 'New Jersey Graduation Proficiency Assessment - Adaptive (NJGPA-Adaptive)',
+      grades: '11',
+      window: 'March 16 through April 1, 2026',
+      notes: 'Testing window extended by three days; now closes Wednesday, April 1, 2026.',
+    },
+    {
+      assessment: 'Dynamic Learning Maps Year End (YE) Model: ELA, Math & Science',
+      grades: 'ELA/Math: 3-8, 11 | Science: 5, 8, 11',
+      window: 'April 6 through May 22, 2026',
+      notes: 'Makeup: May 26 through May 29, 2026.',
+    },
+    {
+      assessment: 'New Jersey Student Learning Assessments - Adaptive (NJSLA-Adaptive)',
+      grades: 'ELA: 3-9 | Math: 3 through HS (Algebra I, Geometry, Algebra II as needed based on accountability requirements)',
+      window: 'April 27 through May 29, 2026',
+      notes: '',
+    },
+    {
+      assessment: 'New Jersey Student Learning Assessments - Science (NJSLA-Science)',
+      grades: 'Science: 5, 8, 11',
+      window: 'April 27 through May 29, 2026',
+      notes: '',
+    },
+    {
+      assessment: 'National Assessment of Educational Progress (NAEP)',
+      grades: 'Math/Reading: 4, 8, 12 | U.S. History/Civics: 8',
+      window: 'January 26 through March 20, 2026',
+      notes: 'Selected districts/schools will be contacted by the NAEP State Coordinator (Tabitha Bellamy) with assessment dates and device modes.',
+    },
+  ]
+
   return (
     <div className="min-h-screen bg-black py-12">
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
@@ -319,34 +388,47 @@ export default function Testing() {
             </div>
             <div>
               <h2 className="text-2xl font-bold text-white mb-2">State Assessments</h2>
-              <p className="text-gray-400">Required standardized testing</p>
+              <p className="text-gray-400">Statewide Assessment Testing Schedule 2025-26 (NJDOE)</p>
             </div>
           </div>
 
-          <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
-            <div className="bg-dark-800 rounded-lg p-6">
-              <h3 className="text-lg font-semibold text-white mb-3">English Language Arts</h3>
-              <p className="text-gray-400 text-sm mb-2">March 3-7, 2026</p>
-              <p className="text-gray-500 text-xs">Grades: 9-11</p>
-            </div>
+          <div className="mb-6 p-4 rounded-lg bg-primary/10 border border-primary/30">
+            <h3 className="text-white font-semibold mb-2">Key Changes</h3>
+            <p className="text-sm text-gray-300 mb-2">
+              The NJGPA-Adaptive spring window is extended by 3 days and now closes on Wednesday, April 1, 2026.
+            </p>
+            <p className="text-sm text-gray-300">
+              Districts may use the full testing window for NJGPA-Adaptive, NJSLA-Adaptive, and NJSLA-Science, but must provide both a regular test date and a make-up opportunity for each student.
+            </p>
+          </div>
 
-            <div className="bg-dark-800 rounded-lg p-6">
-              <h3 className="text-lg font-semibold text-white mb-3">Mathematics</h3>
-              <p className="text-gray-400 text-sm mb-2">March 10-14, 2026</p>
-              <p className="text-gray-500 text-xs">Grades: 9-11</p>
-            </div>
-
-            <div className="bg-dark-800 rounded-lg p-6">
-              <h3 className="text-lg font-semibold text-white mb-3">Science</h3>
-              <p className="text-gray-400 text-sm mb-2">March 17-21, 2026</p>
-              <p className="text-gray-500 text-xs">Grade: 11 only</p>
-            </div>
+          <div className="overflow-x-auto">
+            <table className="w-full text-left border-collapse">
+              <thead>
+                <tr className="border-b border-dark-700">
+                  <th className="py-3 px-4 text-gray-400 font-semibold">Assessment</th>
+                  <th className="py-3 px-4 text-gray-400 font-semibold">Grades</th>
+                  <th className="py-3 px-4 text-gray-400 font-semibold">Administration Window</th>
+                </tr>
+              </thead>
+              <tbody className="text-gray-300">
+                {statewideAssessments.map((item) => (
+                  <tr key={item.assessment} className="border-b border-dark-800 align-top">
+                    <td className="py-4 px-4">
+                      <p className="font-medium text-white">{item.assessment}</p>
+                      {item.notes && <p className="text-xs text-gray-500 mt-1">{item.notes}</p>}
+                    </td>
+                    <td className="py-4 px-4 text-sm">{item.grades}</td>
+                    <td className="py-4 px-4 text-sm">{item.window}</td>
+                  </tr>
+                ))}
+              </tbody>
+            </table>
           </div>
 
           <div className="mt-6 p-4 bg-dark-900 rounded-lg">
             <p className="text-gray-300 text-sm">
-              <strong className="text-white">Important:</strong> State assessments are required for graduation. 
-              Students who do not pass may retake the exam. Accommodations available for eligible students.
+              <strong className="text-white">Important:</strong> Schools should begin make-up testing as soon as allowable within their local testing schedule.
             </p>
           </div>
         </div>

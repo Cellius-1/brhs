@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useCallback } from 'react'
+import React, { useState, useCallback, useEffect } from 'react'
 import { Calendar, Clock, AlertCircle, ChevronDown } from 'lucide-react'
 import { format, parse, isAfter, isBefore, addDays } from 'date-fns'
 
@@ -128,36 +128,56 @@ const scheduleOptions: { id: ScheduleType; label: string }[] = [
 
 export default function Calendars() {
   const [selectedSchedule, setSelectedSchedule] = useState<ScheduleType>('regular')
+  const [currentTime, setCurrentTime] = useState(new Date())
   const currentSchedule = schedules[selectedSchedule]
+
+  useEffect(() => {
+    const intervalId = setInterval(() => {
+      setCurrentTime(new Date())
+    }, 30000)
+
+    return () => clearInterval(intervalId)
+  }, [])
 
   const handleScheduleChange = useCallback((scheduleType: ScheduleType) => {
     setSelectedSchedule(scheduleType)
   }, [])
 
-  const getTimeInMinutes = (timeStr: string): number => {
-    const [time, period] = timeStr.split(' ')
-    const [hours, minutes] = time.split(':').map(Number)
-    const isAM = period === 'AM' || (!period && hours < 12)
-    const adjustedHours = isAM ? hours : hours + 12
-    return adjustedHours * 60 + minutes
+  const getTimeInMinutes = (timeStr: string): number | null => {
+    const parsedTime = timeStr.includes('AM') || timeStr.includes('PM')
+      ? parse(timeStr, 'h:mm a', currentTime)
+      : parse(timeStr, 'H:mm', currentTime)
+
+    if (Number.isNaN(parsedTime.getTime())) {
+      return null
+    }
+
+    return parsedTime.getHours() * 60 + parsedTime.getMinutes()
   }
 
-  const getProgressPercentage = (): number => {
-    const now = new Date()
-    const currentMinutes = now.getHours() * 60 + now.getMinutes()
-    const [schoolStart] = currentSchedule.schoolStart.split(' ')
-    const [, schoolEnd] = currentSchedule.schoolEnd.split(' ')
-    
-    const startMinutes = getTimeInMinutes(schoolStart + ' AM')
-    const endMinutes = getTimeInMinutes(schoolEnd)
+  const getProgressInfo = (): { percentage: number; isAfterSchool: boolean; isBeforeSchool: boolean } => {
+    const currentMinutes = currentTime.getHours() * 60 + currentTime.getMinutes()
+    const startMinutes = getTimeInMinutes(currentSchedule.schoolStart)
+    const endMinutes = getTimeInMinutes(currentSchedule.schoolEnd)
 
-    if (currentMinutes < startMinutes) return 0
-    if (currentMinutes > endMinutes) return 100
-    return ((currentMinutes - startMinutes) / (endMinutes - startMinutes)) * 100
+    if (startMinutes === null || endMinutes === null || endMinutes <= startMinutes) {
+      return { percentage: 0, isAfterSchool: false, isBeforeSchool: true }
+    }
+
+    if (currentMinutes <= startMinutes) {
+      return { percentage: 0, isAfterSchool: false, isBeforeSchool: true }
+    }
+
+    if (currentMinutes >= endMinutes) {
+      return { percentage: 100, isAfterSchool: true, isBeforeSchool: false }
+    }
+
+    const percentage = ((currentMinutes - startMinutes) / (endMinutes - startMinutes)) * 100
+    return { percentage, isAfterSchool: false, isBeforeSchool: false }
   }
 
   const getBlockDay = useCallback(() => {
-    const now = new Date()
+    const now = currentTime
     const blockDays = ['A', 'B', 'C', 'D', 'E']
     
     // Reference date: January 29, 2026 is Day A
@@ -275,9 +295,10 @@ export default function Calendars() {
       daysUntil: 0,
       date: now
     }
-  }, [currentSchedule.schoolEnd])
+  }, [currentSchedule.schoolEnd, currentTime])
 
   const todayBlockInfo = getBlockDay()
+  const progressInfo = getProgressInfo()
   const dayColors: { [key: string]: string } = {
     'A': 'from-blue-500 to-blue-600',
     'B': 'from-purple-500 to-purple-600',
@@ -309,7 +330,7 @@ export default function Calendars() {
               <>
                 <p className="text-gray-300 text-lg mb-3">Weekend - Next School Day</p>
                 <h2 className="text-6xl md:text-7xl font-black text-white mb-4">
-                  Day {todayBlockInfo.blockDay}
+                  {todayBlockInfo.blockDay} Day
                 </h2>
                 <p className="text-2xl text-gray-200 mb-2">
                   {todayBlockInfo.date.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
@@ -322,7 +343,7 @@ export default function Calendars() {
               <>
                 <p className="text-gray-300 text-lg mb-3">School Day Ended - Next School Day</p>
                 <h2 className="text-6xl md:text-7xl font-black text-white mb-4">
-                  Day {todayBlockInfo.blockDay}
+                  {todayBlockInfo.blockDay} Day
                 </h2>
                 <p className="text-2xl text-gray-200 mb-2">
                   {todayBlockInfo.date.toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
@@ -335,7 +356,7 @@ export default function Calendars() {
               <>
                 <p className="text-gray-300 text-lg mb-3">Today's Block</p>
                 <h2 className="text-6xl md:text-7xl font-black text-white mb-4">
-                  Day {todayBlockInfo.blockDay}
+                  {todayBlockInfo.blockDay} Day
                 </h2>
                 <p className="text-xl text-gray-200">
                   {new Date().toLocaleDateString('en-US', { weekday: 'long', month: 'long', day: 'numeric' })}
@@ -413,10 +434,16 @@ export default function Calendars() {
             <div className="w-full bg-dark-800 rounded-full h-3 overflow-hidden">
               <div
                 className={`h-full bg-gradient-to-r ${currentSchedule.color} transition-all duration-1000`}
-                style={{ width: `${getProgressPercentage()}%` }}
+                style={{ width: `${progressInfo.percentage}%` }}
               />
             </div>
-            <p className="text-sm text-gray-400 text-center">{getProgressPercentage().toFixed(0)}% through school day</p>
+            <p className="text-sm text-gray-400 text-center">
+              {progressInfo.isAfterSchool
+                ? 'School day has ended'
+                : progressInfo.isBeforeSchool
+                  ? 'School day has not started yet'
+                  : `${progressInfo.percentage.toFixed(0)}% through school day`}
+            </p>
           </div>
         </div>
 
@@ -469,7 +496,7 @@ export default function Calendars() {
             {/* Day A */}
             <div className="glass-effect rounded-lg p-6 border border-dark-700 hover:border-primary/50 transition-all">
               <div className="mb-4">
-                <h3 className="text-2xl font-bold text-primary mb-2">Day A</h3>
+                <h3 className="text-2xl font-bold text-primary mb-2">A Day</h3>
                 <div className="h-1 w-12 bg-gradient-to-r from-blue-500 to-blue-600 rounded-full"></div>
               </div>
               <div className="space-y-4">
@@ -489,7 +516,7 @@ export default function Calendars() {
             {/* Day B */}
             <div className="glass-effect rounded-lg p-6 border border-dark-700 hover:border-primary/50 transition-all">
               <div className="mb-4">
-                <h3 className="text-2xl font-bold text-purple-400 mb-2">Day B</h3>
+                <h3 className="text-2xl font-bold text-purple-400 mb-2">B Day</h3>
                 <div className="h-1 w-12 bg-gradient-to-r from-purple-500 to-purple-600 rounded-full"></div>
               </div>
               <div className="space-y-4">
@@ -509,7 +536,7 @@ export default function Calendars() {
             {/* Day C */}
             <div className="glass-effect rounded-lg p-6 border border-dark-700 hover:border-primary/50 transition-all">
               <div className="mb-4">
-                <h3 className="text-2xl font-bold text-yellow-400 mb-2">Day C</h3>
+                <h3 className="text-2xl font-bold text-yellow-400 mb-2">C Day</h3>
                 <div className="h-1 w-12 bg-gradient-to-r from-yellow-500 to-yellow-600 rounded-full"></div>
               </div>
               <div className="space-y-4">
@@ -529,7 +556,7 @@ export default function Calendars() {
             {/* Day D */}
             <div className="glass-effect rounded-lg p-6 border border-dark-700 hover:border-primary/50 transition-all">
               <div className="mb-4">
-                <h3 className="text-2xl font-bold text-cyan-400 mb-2">Day D</h3>
+                <h3 className="text-2xl font-bold text-cyan-400 mb-2">D Day</h3>
                 <div className="h-1 w-12 bg-gradient-to-r from-cyan-500 to-cyan-600 rounded-full"></div>
               </div>
               <div className="space-y-4">
@@ -549,7 +576,7 @@ export default function Calendars() {
             {/* Day E */}
             <div className="glass-effect rounded-lg p-6 border border-dark-700 hover:border-primary/50 transition-all">
               <div className="mb-4">
-                <h3 className="text-2xl font-bold text-green-400 mb-2">Day E</h3>
+                <h3 className="text-2xl font-bold text-green-400 mb-2">E Day</h3>
                 <div className="h-1 w-12 bg-gradient-to-r from-green-500 to-green-600 rounded-full"></div>
               </div>
               <div className="space-y-4">

@@ -1,5 +1,7 @@
 'use client'
 
+import Image from 'next/image'
+
 export default function Hero() {
   return (
     <section className="bg-black pt-8 pb-6">
@@ -10,9 +12,16 @@ export default function Hero() {
               <span className="text-red-500 text-sm font-medium">Student Dashboard</span>
             </div>
           </div>
-          <h1 className="text-5xl md:text-6xl font-bold mb-3">
-            <span className="gradient-text">BRHS</span>
-          </h1>
+          <div className="mb-4">
+            <Image
+              src="/branding/Primarylogo.png"
+              alt="Bridgewater-Raritan High School Panthers"
+              width={2200}
+              height={700}
+              className="w-full max-w-4xl h-auto mx-auto"
+              priority
+            />
+          </div>
           <p className="text-lg text-gray-400 mb-6 max-w-2xl mx-auto">
             Everything you need, all in one place
           </p>

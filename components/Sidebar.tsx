@@ -2,7 +2,7 @@
 
 import Link from 'next/link'
 import { usePathname } from 'next/navigation'
-import { X, Home, Library, Trophy, Users, Calendar, GraduationCap, ClipboardList, Utensils, School, BookOpen, HelpCircle, ChevronRight, Phone, Book } from 'lucide-react'
+import { X, Home, Library, Trophy, Users, Calendar, GraduationCap, ClipboardList, Utensils, School, BookOpen, HelpCircle, ChevronRight, Phone, Book, Sparkles, Award } from 'lucide-react'
 
 interface SidebarProps {
   isOpen: boolean
@@ -12,6 +12,7 @@ interface SidebarProps {
 const navigation = [
   { name: 'Home', href: '/', icon: Home },
   { name: 'Athletics', href: '/athletics', icon: Trophy },
+  { name: 'Events', href: '/events', icon: Sparkles },
   { name: 'Clubs', href: '/clubs', icon: Users },
   { name: 'Calendars & Schedules', href: '/calendars', icon: Calendar },
   { name: 'Course Catalog', href: '/courses', icon: Book },
@@ -19,7 +20,7 @@ const navigation = [
   { name: 'Student Council', href: '/student-council', icon: Users },
   { name: 'Counseling', href: '/counseling', icon: HelpCircle },
   { name: 'Testing Schedule', href: '/testing', icon: ClipboardList },
-  { name: 'NHS', href: '/nhs', icon: BookOpen },
+  { name: 'Honors Societies', href: '/nhs', icon: Award },
   { name: 'Vo-Tech', href: '/vo-tech', icon: School },
   { name: 'Graduation', href: '/graduation', icon: GraduationCap },
   { name: 'Contact Us', href: '/contact', icon: Phone },

@@ -1,6 +1,7 @@
 'use client'
 
 import Link from 'next/link'
+import Image from 'next/image'
 import { Menu, Bell, Search, X } from 'lucide-react'
 import { useState } from 'react'
 
@@ -26,8 +27,15 @@ export default function Header({ onMenuClick }: HeaderProps) {
                 <Menu className="w-6 h-6 text-white" />
               </button>
               <Link href="/" className="flex items-center space-x-2.5">
-                <div className="w-9 h-9 bg-gradient-to-br from-red-600 to-red-700 rounded-xl flex items-center justify-center">
-                  <span className="text-white font-bold text-lg">BR</span>
+                <div className="w-10 h-10 rounded-xl overflow-hidden border border-dark-700 bg-dark-800 flex items-center justify-center">
+                  <Image
+                    src="/branding/Lettermark1.png"
+                    alt="Bridgewater-Raritan logo"
+                    width={40}
+                    height={40}
+                    className="w-full h-full object-contain"
+                    priority
+                  />
                 </div>
                 <div>
                   <h1 className="text-base font-bold text-white">BRHS</h1>

@@ -157,6 +157,15 @@ const concentrationCourseMap: Record<ConcentrationName, string[]> = {
 
 const concentrationTagPrefix = 'Concentration: '
 
+const normalizeDualEnrollmentUniversities = (value: string): string[] => {
+  return value
+    .replace(/\(.*?\)/g, '')
+    .replace(/\bRVCC\b/g, 'Raritan Valley Community College')
+    .split(/\s+or\s+|\/|,/i)
+    .map((name) => name.trim())
+    .filter(Boolean)
+}
+
 const courses: Course[] = [
 // =========================
 // ENGLISH – REQUIRED COURSES
@@ -3365,6 +3374,7 @@ function CoursesContent() {
   const [selectedLevel, setSelectedLevel] = useState<string>('All')
   const [selectedGrade, setSelectedGrade] = useState<number | null>(null)
   const [selectedConcentration, setSelectedConcentration] = useState<string>('All')
+  const [selectedDualEnrollmentUniversities, setSelectedDualEnrollmentUniversities] = useState<string[]>([])
   const [showFilters, setShowFilters] = useState(false)
 
   const coursesWithConcentrationTags = useMemo(() => {
@@ -3388,6 +3398,13 @@ function CoursesContent() {
   const levels = ['All', 'Academic', 'Honors', 'AP', 'Elective']
   const grades = [9, 10, 11, 12]
   const concentrationOptions = ['All', ...concentrationNames]
+  const dualEnrollmentUniversities = Array.from(
+    new Set(
+      coursesWithConcentrationTags
+        .filter((course) => Boolean(course.dualEnrollment))
+        .flatMap((course) => normalizeDualEnrollmentUniversities(course.dualEnrollment!))
+    )
+  ).sort()
 
   const filteredCourses = useMemo(() => {
     return coursesWithConcentrationTags.filter(course => {
@@ -3403,16 +3420,46 @@ function CoursesContent() {
       const matchesConcentration =
         selectedConcentration === 'All' ||
         course.tags.includes(`${concentrationTagPrefix}${selectedConcentration}`)
+      const matchesDualEnrollment =
+        selectedDualEnrollmentUniversities.length === 0 ||
+        (Boolean(course.dualEnrollment) &&
+          normalizeDualEnrollmentUniversities(course.dualEnrollment!).some((university) =>
+            selectedDualEnrollmentUniversities.includes(university)
+          ))
 
-      return matchesSearch && matchesDepartment && matchesLevel && matchesGrade && matchesConcentration
+      return (
+        matchesSearch &&
+        matchesDepartment &&
+        matchesLevel &&
+        matchesGrade &&
+        matchesConcentration &&
+        matchesDualEnrollment
+      )
     })
-  }, [searchTerm, selectedDepartment, selectedLevel, selectedGrade, selectedConcentration, coursesWithConcentrationTags])
+  }, [
+    searchTerm,
+    selectedDepartment,
+    selectedLevel,
+    selectedGrade,
+    selectedConcentration,
+    selectedDualEnrollmentUniversities,
+    coursesWithConcentrationTags,
+  ])
+
+  const toggleDualEnrollmentUniversity = (university: string) => {
+    setSelectedDualEnrollmentUniversities((current) =>
+      current.includes(university)
+        ? current.filter((item) => item !== university)
+        : [...current, university]
+    )
+  }
 
   const clearFilters = () => {
     setSelectedDepartment('All')
     setSelectedLevel('All')
     setSelectedGrade(null)
     setSelectedConcentration('All')
+    setSelectedDualEnrollmentUniversities([])
   }
 
   React.useEffect(() => {
@@ -3470,7 +3517,7 @@ function CoursesContent() {
           >
             <Filter className="w-5 h-5" />
             <span>Filters</span>
-            {(selectedDepartment !== 'All' || selectedLevel !== 'All' || selectedGrade || selectedConcentration !== 'All') && (
+            {(selectedDepartment !== 'All' || selectedLevel !== 'All' || selectedGrade || selectedConcentration !== 'All' || selectedDualEnrollmentUniversities.length > 0) && (
               <span className="bg-primary text-white px-2 py-0.5 rounded-full text-xs">Active</span>
             )}
           </button>
@@ -3544,6 +3591,30 @@ function CoursesContent() {
                       <option key={concentration} value={concentration}>{concentration}</option>
                     ))}
                   </select>
+                </div>
+              </div>
+
+              <div>
+                <label className="block text-xs font-medium text-gray-400 mb-2">Dual Enrollment University (Multi-select)</label>
+                <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-2">
+                  {dualEnrollmentUniversities.map((university) => {
+                    const isSelected = selectedDualEnrollmentUniversities.includes(university)
+                    return (
+                      <button
+                        key={university}
+                        type="button"
+                        onClick={() => toggleDualEnrollmentUniversity(university)}
+                        className={`px-3 py-2.5 rounded-xl border text-left text-sm transition-colors ${
+                          isSelected
+                            ? 'bg-red-600/20 border-red-500 text-white'
+                            : 'bg-dark-900 border-dark-700 text-gray-300 hover:border-red-600/60'
+                        }`}
+                        aria-pressed={isSelected}
+                      >
+                        {university}
+                      </button>
+                    )
+                  })}
                 </div>
               </div>
             </div>

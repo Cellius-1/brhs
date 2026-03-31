@@ -1,6 +1,6 @@
 'use client'
 
-import React, { useState, useMemo } from 'react'
+import React, { useState, useMemo, Suspense } from 'react'
 import Link from 'next/link'
 import { useSearchParams } from 'next/navigation'
 import { Search, Filter, BookOpen, Award, GraduationCap, X } from 'lucide-react'
@@ -3358,7 +3358,7 @@ const courses: Course[] = [
 },
 
 ]
-export default function CoursesCatalog() {
+function CoursesContent() {
   const searchParams = useSearchParams()
   const [searchTerm, setSearchTerm] = useState('')
   const [selectedDepartment, setSelectedDepartment] = useState<string>('All')
@@ -3637,5 +3637,25 @@ export default function CoursesCatalog() {
         </div>
       </div>
     </div>
+  )
+}
+
+export default function CoursesCatalog() {
+  return (
+    <Suspense fallback={
+      <div className="min-h-screen bg-black py-6">
+        <div className="max-w-7xl mx-auto px-6">
+          <div className="mb-6">
+            <h1 className="text-3xl font-bold text-white mb-2">Course Catalog</h1>
+            <p className="text-gray-400">Explore 400+ courses</p>
+          </div>
+          <div className="text-center py-16">
+            <p className="text-gray-400">Loading courses...</p>
+          </div>
+        </div>
+      </div>
+    }>
+      <CoursesContent />
+    </Suspense>
   )
 }

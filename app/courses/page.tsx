@@ -3427,7 +3427,7 @@ function CoursesContent() {
     if (searchParam) {
       setSearchTerm(searchParam)
     }
-  }, [searchParams, departments])
+  }, [])
 
   return (
     <div className="min-h-screen bg-black py-6">

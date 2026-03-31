@@ -782,7 +782,7 @@ const courses: Course[] = [
 },
 {
   id: 'cs-ap-cyber',
-  name: 'Advanced Placement Cybersecurity',
+  name: 'AP Cybersecurity',
   code: 'CS-AP-CYB',
   department: 'Computer Science',
   credits: 5,
@@ -2414,7 +2414,7 @@ const courses: Course[] = [
 },
 {
   id: 'bus-ap-business-finance',
-  name: 'Advanced Placement Business with Personal Finance',
+  name: 'AP Business with Personal Finance',
   code: 'BUS-AP-BPF',
   department: 'Business',
   credits: 5,
@@ -2652,7 +2652,7 @@ const courses: Course[] = [
 },
 {
   id: 'ap-art-design-drawing',
-  name: 'Advanced Placement Art & Design – Drawing',
+  name: 'AP Art & Design – Drawing',
   code: 'AP-ART-DRAW',
   department: 'Visual Arts',
   credits: 5,
@@ -2664,7 +2664,7 @@ const courses: Course[] = [
 },
 {
   id: 'ap-art-design-2d',
-  name: 'Advanced Placement Art & Design – 2D Design',
+  name: 'AP Art & Design – 2D Design',
   code: 'AP-ART-2D',
   department: 'Visual Arts',
   credits: 5,
@@ -2688,7 +2688,7 @@ const courses: Course[] = [
 },
 {
   id: 'ap-art-history',
-  name: 'Advanced Placement Art History',
+  name: 'AP Art History',
   code: 'AP-ART-HIST',
   department: 'Visual Arts',
   credits: 5,
@@ -3274,7 +3274,7 @@ const courses: Course[] = [
 },
 {
   id: 'ap-research',
-  name: 'Advanced Placement Research',
+  name: 'AP Research',
   code: 'AP-RES',
   department: 'Interdisciplinary Studies',
   credits: 5,
@@ -3286,7 +3286,7 @@ const courses: Course[] = [
 },
 {
   id: 'ap-seminar',
-  name: 'Advanced Placement Seminar',
+  name: 'AP Seminar',
   code: 'AP-SEM',
   department: 'Interdisciplinary Studies',
   credits: 5,

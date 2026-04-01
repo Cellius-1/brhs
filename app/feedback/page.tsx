@@ -27,7 +27,7 @@ export default function FeedbackPage() {
           </div>
           <h1 className="text-4xl font-bold text-white mb-3">Website Feedback</h1>
           <p className="text-gray-400">
-            Tell us what is working, what is confusing, or what should be improved on the BRHS Student Hub.
+            Tell us what is working, what is confusing, or what should be improved on the BRHS Student Dashboard.
           </p>
         </header>
 

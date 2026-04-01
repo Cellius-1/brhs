@@ -39,7 +39,7 @@ export default function Header({ onMenuClick }: HeaderProps) {
                 </div>
                 <div>
                   <h1 className="text-base font-bold text-white">BRHS</h1>
-                  <p className="text-[10px] text-gray-500 hidden sm:block">Student Hub</p>
+                  <p className="text-[10px] text-gray-500 hidden sm:block">Student Dashboard</p>
                 </div>
               </Link>
             </div>

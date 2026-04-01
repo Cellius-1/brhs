@@ -117,7 +117,7 @@ export default function Footer() {
 
           <div className="mt-8 pt-8 border-t border-dark-700 text-center">
             <p className="text-gray-400 text-sm">
-              &copy; {new Date().getFullYear()} BRHS Student Hub. All rights reserved. | Go Panthers
+              &copy; {new Date().getFullYear()} BRHS Student Dashboard. All rights reserved. | Go Panthers
             </p>
           </div>
         </div>

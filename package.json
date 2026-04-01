@@ -1,7 +1,7 @@
 {
   "name": "brhs-student-hub",
   "version": "1.0.0",
-  "description": "Bridgewater-Raritan High School Student Hub - All-in-one resource center for students",
+  "description": "Bridgewater-Raritan High School Student Dashboard - All-in-one resource center for students",
   "private": true,
   "scripts": {
     "dev": "next dev",

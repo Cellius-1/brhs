@@ -1,4 +1,4 @@
-# BRHS Student Hub
+# BRHS Student Dashboard
 
 A modern, fully functional student resource hub for Bridgewater-Raritan High School. This all-in-one website provides students with easy access to everything they need - from schedules and events to forms and resources.
 

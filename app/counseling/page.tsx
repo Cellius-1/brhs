@@ -23,7 +23,7 @@ const counselors: Counselor[] = [
     grade10: 'Chf - Fa, Ric - Riv',
     grade11: 'Brj - Cori, Pant - Park',
     grade12: 'Blon - Brah, Fam - Fri, Khao - Kote, Marj - Martine, O - Og, Thon - Tor',
-    bookmeLink: 'https://youcanbook.me/',
+    bookmeLink: 'https://appezzato.youcanbook.me/',
   },
   {
     name: 'Xavier Brooks',
@@ -33,7 +33,7 @@ const counselors: Counselor[] = [
     grade10: 'Loq - Mil, Riw - Roj',
     grade11: 'K - Lan, Parl - Pas',
     grade12: 'Frj - He, Martinf - Math',
-    bookmeLink: 'https://youcanbook.me/',
+    bookmeLink: 'https://xbrooks.youcanbook.me/',
   },
   {
     name: 'Justina Del Rio',
@@ -43,7 +43,7 @@ const counselors: Counselor[] = [
     grade10: 'Rok - Roz, Shef - Ul',
     grade11: 'Pat - Reo, Shah',
     grade12: 'Mati - Mene, Oh - Ramak',
-    bookmeLink: 'https://youcanbook.me/',
+    bookmeLink: 'https://ms-del-rio-4.youcanbook.me/',
   },
   {
     name: 'Bryan Devlin',
@@ -53,7 +53,7 @@ const counselors: Counselor[] = [
     grade10: 'Rp - Rz, Um - Z',
     grade11: 'Pau - Perr, Shai - U',
     grade12: 'Menf - Mitc, Ramal - Sci',
-    bookmeLink: 'https://youcanbook.me/',
+    bookmeLink: 'https://bryandevlin.youcanbook.me/',
   },
   {
     name: 'Suzanne Geoghan',
@@ -63,7 +63,7 @@ const counselors: Counselor[] = [
     grade10: 'Mim - Par, S - Sai',
     grade11: 'Lao - Mat, Pers - Ph',
     grade12: 'Hf - Khan, Mitd - Moh',
-    bookmeLink: 'https://youcanbook.me/',
+    bookmeLink: 'https://sgeoghan.youcanbook.me/',
   },
   {
     name: 'Elle Greulich',
@@ -73,7 +73,7 @@ const counselors: Counselor[] = [
     grade10: 'Hb - Khan, Saj - San',
     grade11: 'Eo - G, Pi - Poc',
     grade12: 'Brai - Cif, Moi - Mora',
-    bookmeLink: 'https://youcanbook.me/',
+    bookmeLink: 'https://egreulich.youcanbook.me/',
   },
   {
     name: 'Laura Karns',
@@ -83,7 +83,7 @@ const counselors: Counselor[] = [
     grade10: 'Khao - Lop, Schf - Scho',
     grade11: 'H - J, Prat - Rad',
     grade12: 'Cig - Fal, Mue - Murd',
-    bookmeLink: 'https://youcanbook.me/',
+    bookmeLink: 'https://drkarns.youcanbook.me/',
   },
   {
     name: 'Tito Santos',
@@ -93,7 +93,7 @@ const counselors: Counselor[] = [
     grade10: 'Fb - Ha, Schp - Sen',
     grade11: 'Corj - En, Rae - Rama',
     grade12: 'A - Blom, Mure - Nal',
-    bookmeLink: 'https://youcanbook.me/',
+    bookmeLink: 'https://titosantos.youcanbook.me/',
   },
   {
     name: 'Evan Seavey',
@@ -103,7 +103,7 @@ const counselors: Counselor[] = [
     grade10: 'A - Ba, Seo - Shap',
     grade11: 'Ramb - Redd, V - Z',
     grade12: 'Nam - Ng, Scj - Thom',
-    bookmeLink: 'https://youcanbook.me/',
+    bookmeLink: 'https://seavey.youcanbook.me/',
   },
   {
     name: 'Imrin Thind',
@@ -113,7 +113,7 @@ const counselors: Counselor[] = [
     grade10: 'Pas - Rib, Shaq - Shee',
     grade11: 'Mau - Pans, Rede - Ren',
     grade12: 'Kotf - Mari, Nga - Nz',
-    bookmeLink: 'https://youcanbook.me/',
+    bookmeLink: 'https://ithind.youcanbook.me/',
   },
   {
     name: 'Sapphire Toussaint',
@@ -123,7 +123,7 @@ const counselors: Counselor[] = [
     grade10: 'Bb - Che, Sao - Sche',
     grade11: 'A - Bri, Pod - Pras',
     grade12: 'Morb - Mud, Tos - Z',
-    bookmeLink: 'https://youcanbook.me/',
+    bookmeLink: 'https://mstoussaint.youcanbook.me/',
   },
 ]
 

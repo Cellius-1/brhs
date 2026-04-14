@@ -158,7 +158,7 @@ export default function Counseling() {
               The School Counseling Department at BRHS is a comprehensive and innovative center, which assists students in grades 9 - 12 with academic, personal, social, and professional development. Counselors are pro-active in their approach and emphasize technology to support learning goals.
             </p>
             <div className="bg-primary/10 border-l-4 border-primary p-4 rounded-r-lg">
-              <p className="text-white font-semibold mb-2">🏆 Award-Winning Program</p>
+              <p className="text-white font-semibold mb-2">Award-Winning Program</p>
               <p className="text-sm">
                 The New Jersey School Boards Association has selected the BRHS School Counseling Department as a winner of the <strong>School Leader award for 2002</strong>. The department received the award for their innovative program "Integrating Technology in the Developmental Guidance Model."
               </p>
